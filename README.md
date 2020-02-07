@@ -1,2 +1,2 @@
 # BuzzBuzz
-an Android App of cocktail recipes for class project
+an Android App of cocktail Recipes for class project

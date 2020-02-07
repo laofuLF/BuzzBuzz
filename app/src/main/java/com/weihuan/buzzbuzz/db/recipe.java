@@ -1,6 +1,6 @@
 package com.weihuan.buzzbuzz.db;
 
-public class recipe {
+public class Recipe {
 
     public static final String TABLE_NAME = "recipes";
     public static final String COLUMN_ID = "id";
@@ -16,17 +16,19 @@ public class recipe {
 
     // Create table SQL query
     public static final String CREATE_TABLE =
-            "CREATE TABLE " + TABLE_NAME + "("
-                    + COLUMN_ID + " INTEGER PRIMARY KEY"
-                    + COLUMN_RECIPE_NAME + " TEXT,"
-                    + COLUMN_GLASS + " TEXT,"
-                    + COLUMN_IMAGE + " TEXT"
-                    + ")";
+            "CREATE TABLE " + TABLE_NAME + " ("
+                    + COLUMN_ID + " INTEGER PRIMARY KEY, "
+                    + COLUMN_RECIPE_NAME + " TEXT, "
+                    + COLUMN_GLASS + " TEXT, "
+                    + COLUMN_IMAGE + " TEXT)";
 
-    public recipe(){
+    public static final String DELETE_TABLE =
+            "DROP TABLE IF EXISTS " + TABLE_NAME;
+
+    public Recipe(){
     }
 
-    public recipe(int id, String recipeName, String glass, String image) {
+    public Recipe(int id, String recipeName, String glass, String image) {
         this.id = id;
         this.recipeName = recipeName;
         this.glass = glass;

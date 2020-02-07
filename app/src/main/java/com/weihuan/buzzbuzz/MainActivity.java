@@ -2,7 +2,6 @@ package com.weihuan.buzzbuzz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -12,8 +11,10 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.weihuan.buzzbuzz.db.DatabaseHelper;
-import com.weihuan.buzzbuzz.db.recipe;
+import com.weihuan.buzzbuzz.db.Recipe;
+
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,10 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -42,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Database
     private DatabaseHelper db;
-    private List<recipe> recipeList = new ArrayList<>();
+    private ArrayList<Recipe> recipeList = new ArrayList<>();
 
-    public String url = "https://api.github.com/users/codepath";
+    public String url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita";
 
 
     @Override
@@ -54,14 +53,13 @@ public class MainActivity extends AppCompatActivity {
         initUI();
 
         db = new DatabaseHelper(this);
-        recipeList.addAll(db.getAllRecipes());
+//        recipeList.addAll(db.getAllRecipes());
 
         run();
 
-
     }
 
-    void run(){
+    private void run(){
         textView = findViewById(R.id.textView);
         Log.i("running", "11111");
 
@@ -89,16 +87,24 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        try{
-                            JSONObject jsonObject = new JSONObject(result);
-                            final String owner = jsonObject.getString("name");
-                            Log.i("content from the web", owner);
-                            textView.setText(owner);
+                        try {
+                            getDate(result);
+                            for (Recipe recipe: recipeList) {
+                                int id = recipe.getId();
+                                Log.i("item id is: ", String.valueOf(id));
+                                db.insertRecipe(recipe); // insert into database
+                            }
+                            // test db data
+                            List<Recipe> RecipeDatabase = new ArrayList<>();
+                            RecipeDatabase.addAll(db.getAllRecipes());
+                            for (Recipe recipeDB: RecipeDatabase) {
+                                int id = recipeDB.getId();
+                                Log.i("Database data:", String.valueOf(id));
+                            }
 
-                        }catch (JSONException e){
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 });
             }
@@ -117,6 +123,26 @@ public class MainActivity extends AppCompatActivity {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addInterceptor(loggingInterceptor);
         return builder.build();
+    }
+
+    private void getDate(String result) throws JSONException {
+        JSONObject reader = new JSONObject(result);
+        JSONArray recipeListJS = reader.getJSONArray("drinks");
+        int count = recipeListJS.length();
+
+        for (int i = 0; i < count; i++) {
+            JSONObject currentRecipeJS = recipeListJS.getJSONObject(i);
+            int id = currentRecipeJS.getInt("idDrink");
+            String recipeName = currentRecipeJS.getString("strDrink");
+            String glass = currentRecipeJS.getString("strGlass");
+            String imageUrl = currentRecipeJS.getString("strDrinkThumb");
+            Recipe currentData = new Recipe(id, recipeName, glass, imageUrl);
+            recipeList.add(currentData);
+            Log.i("id: ", String.valueOf(id));
+            Log.i("Name: ", recipeName);
+            Log.i("Glass: ", glass);
+            Log.i("Image: ", imageUrl);
+        }
     }
 
 

@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,56 +24,62 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(recipe.CREATE_TABLE);
+        db.execSQL(Recipe.DELETE_TABLE);
+        db.execSQL(Recipe.CREATE_TABLE);
     }
 
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + recipe.TABLE_NAME);
+        db.execSQL(Recipe.DELETE_TABLE);
 
         // Create tables again
         onCreate(db);
     }
 
 
-    public void insertNote(int id, String recipeName, String recipeGlass, String recipeImage) {
+    public void insertRecipe(Recipe recipe) {
 
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
-        // input all values of this piece of data
-        values.put(recipe.COLUMN_ID, id);
-        values.put(recipe.COLUMN_RECIPE_NAME, recipeName);
-        values.put(recipe.COLUMN_GLASS, recipeGlass);
-        values.put(recipe.COLUMN_IMAGE, recipeImage);
+        int id = recipe.getId();
+        String recipeName = recipe.getRecipeName();
+        String recipeGlass = recipe.getGlass();
+        String recipeImage = recipe.getImage();
 
-        db.insert(recipe.TABLE_NAME, null, values);
+        // input all values of this piece of data
+        values.put(Recipe.COLUMN_ID, id);
+        values.put(Recipe.COLUMN_RECIPE_NAME, recipeName);
+        values.put(Recipe.COLUMN_GLASS, recipeGlass);
+        values.put(Recipe.COLUMN_IMAGE, recipeImage);
+
+        db.insert(Recipe.TABLE_NAME, null, values);
         db.close();
     }
 
 
-    public recipe getNote(int id) {
+    public Recipe getRecipe(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.query(recipe.TABLE_NAME,
-                new String[]{recipe.COLUMN_ID, recipe.COLUMN_RECIPE_NAME, recipe.COLUMN_GLASS, recipe.COLUMN_IMAGE},
-                recipe.COLUMN_ID + "=?",
+        Cursor cursor = db.query(Recipe.TABLE_NAME,
+                new String[]{Recipe.COLUMN_ID, Recipe.COLUMN_RECIPE_NAME, Recipe.COLUMN_GLASS, Recipe.COLUMN_IMAGE},
+                Recipe.COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null,null,null);
 
         if (cursor != null) {
             cursor.moveToFirst();
         }
 
-        // prepare the recipe object
-        recipe output = new recipe(
-                cursor.getInt(cursor.getColumnIndex(recipe.COLUMN_ID)),
-                cursor.getString(cursor.getColumnIndex(recipe.COLUMN_RECIPE_NAME)),
-                cursor.getString(cursor.getColumnIndex(recipe.COLUMN_GLASS)),
-                cursor.getString(cursor.getColumnIndex(recipe.COLUMN_IMAGE))
+        // prepare the Recipe object
+        Recipe output = new Recipe(
+                cursor.getInt(cursor.getColumnIndex(Recipe.COLUMN_ID)),
+                cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_RECIPE_NAME)),
+                cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_GLASS)),
+                cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_IMAGE))
         );
 
         cursor.close();
@@ -83,12 +87,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<recipe> getAllRecipes() {
-        List<recipe> recipes = new ArrayList<>();
+    public List<Recipe> getAllRecipes() {
+        List<Recipe> recipes = new ArrayList<>();
 
         // Select All
-        String selectQuery = "SELECT * FROM " + recipe.TABLE_NAME + "ORDER BY " +
-                recipe.COLUMN_ID;
+        String selectQuery = "SELECT * FROM " + Recipe.TABLE_NAME + " ORDER BY " +
+                Recipe.COLUMN_ID;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -96,11 +100,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // loop through all rows and add to the list
         if (cursor.moveToFirst()) {
             do {
-                recipe current = new recipe();
-                current.setId(cursor.getInt(cursor.getColumnIndex(recipe.COLUMN_ID)));
-                current.setRecipeName(cursor.getString(cursor.getColumnIndex(recipe.COLUMN_RECIPE_NAME)));
-                current.setGlass(cursor.getString(cursor.getColumnIndex(recipe.COLUMN_GLASS)));
-                current.setImage(cursor.getString(cursor.getColumnIndex(recipe.COLUMN_IMAGE)));
+                Recipe current = new Recipe();
+                current.setId(cursor.getInt(cursor.getColumnIndex(Recipe.COLUMN_ID)));
+                current.setRecipeName(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_RECIPE_NAME)));
+                current.setGlass(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_GLASS)));
+                current.setImage(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_IMAGE)));
+                recipes.add(current);
             } while (cursor.moveToNext());
         }
 
@@ -111,7 +116,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public int getRecipesCount() {
-        String countQuery = "SELECT * FROM " + recipe.TABLE_NAME;
+        String countQuery = "SELECT * FROM " + Recipe.TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
 
@@ -122,9 +127,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void deleteRecipe(recipe recipeData) {
+    public void deleteRecipe(Recipe recipeData) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(recipe.TABLE_NAME, recipe.COLUMN_ID + " = ?",
+        db.delete(Recipe.TABLE_NAME, Recipe.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(recipeData.getId())});
 
         db.close();
