@@ -1,6 +1,7 @@
 package com.weihuan.buzzbuzz;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,9 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
+import com.weihuan.buzzbuzz.Fragments.FavoriteFragment;
+import com.weihuan.buzzbuzz.Fragments.HomeFragment;
+import com.weihuan.buzzbuzz.Fragments.SearchFragment;
 import com.weihuan.buzzbuzz.db.DatabaseHelper;
 import com.weihuan.buzzbuzz.db.Recipe;
 
@@ -21,6 +25,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -50,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initUI();
+        initBottomBar();
+
 
         db = new DatabaseHelper(this);
 //        recipeList.addAll(db.getAllRecipes());
@@ -60,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void run(){
-        textView = findViewById(R.id.textView);
         Log.i("running", "11111");
 
 
@@ -88,11 +93,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            getDate(result);
+                            getData(result);
                             for (Recipe recipe: recipeList) {
                                 int id = recipe.getId();
                                 Log.i("item id is: ", String.valueOf(id));
-                                db.insertRecipe(recipe); // insert into database
+//                                db.insertRecipe(recipe); // insert into database
                             }
                             // test db data
                             List<Recipe> RecipeDatabase = new ArrayList<>();
@@ -102,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                                 Log.i("Database data:", String.valueOf(id));
                             }
 
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -110,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private static OkHttpClient getOKHttpClient() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -125,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         return builder.build();
     }
 
-    private void getDate(String result) throws JSONException {
+    private void getData(String result) throws JSONException {
         JSONObject reader = new JSONObject(result);
         JSONArray recipeListJS = reader.getJSONArray("drinks");
         int count = recipeListJS.length();
@@ -147,16 +153,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void initUI() {
+    private void initBottomBar() {
+
         bottomNavigation = findViewById(R.id.bottom_navigation);
-        viewPager = findViewById(R.id.view_pager);
 
         AHBottomNavigationItem item1 =
-                new AHBottomNavigationItem(R.string.bottomTitle1, R.drawable.specs, R.color.tab1);
+                new AHBottomNavigationItem(R.string.bottomTitle1, R.drawable.ic_home_black_24dp, R.color.tab1);
         AHBottomNavigationItem item2 =
-                new AHBottomNavigationItem(R.string.bottomTitle2, R.drawable.specs, R.color.tab2);
+                new AHBottomNavigationItem(R.string.bottomTitle2, R.drawable.ic_local_bar_black_24dp, R.color.tab2);
         AHBottomNavigationItem item3 =
-                new AHBottomNavigationItem(R.string.bottomTitle3, R.drawable.specs, R.color.tab3);
+                new AHBottomNavigationItem(R.string.bottomTitle3, R.drawable.ic_favorite_black_24dp, R.color.tab3);
 
 
         bottomNavigation.addItem(item1);
@@ -169,6 +175,22 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
+                Fragment selectedFragment = null;
+
+                switch (position) {
+                    case 0:
+                        selectedFragment = new HomeFragment();
+                        break;
+                    case 1:
+                        selectedFragment = new SearchFragment();
+                        break;
+                    case 2:
+                        selectedFragment = new FavoriteFragment();
+                        break;
+                }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+
                 return true;
             }
         });

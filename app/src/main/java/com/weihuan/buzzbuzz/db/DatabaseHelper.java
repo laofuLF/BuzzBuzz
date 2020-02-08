@@ -24,7 +24,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(Recipe.DELETE_TABLE);
         db.execSQL(Recipe.CREATE_TABLE);
     }
 
@@ -135,5 +134,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+
+    public void deleteTable() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(Recipe.DELETE_TABLE);
+        db.close();
+    }
 
 }
