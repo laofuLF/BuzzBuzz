@@ -2,7 +2,7 @@
     <string name="app_name">BuzzBuzz</string>
     <string name="bottomTitle1">Discover</string>
     <string name="bottomTitle2">Cocktails</string>
-    <string name="bottomTitle3">My Recipe</string>
+    <string name="bottomTitle3">My Recipes</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

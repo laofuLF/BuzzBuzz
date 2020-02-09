@@ -2,18 +2,21 @@ package com.weihuan.buzzbuzz;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.ListFragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
-import com.weihuan.buzzbuzz.Fragments.FavoriteFragment;
-import com.weihuan.buzzbuzz.Fragments.HomeFragment;
-import com.weihuan.buzzbuzz.Fragments.SearchFragment;
+import com.weihuan.buzzbuzz.Fragments.RecipeListFragment;
+import com.weihuan.buzzbuzz.Fragments.ViewPagerAdapter;
 import com.weihuan.buzzbuzz.db.DatabaseHelper;
 import com.weihuan.buzzbuzz.db.Recipe;
 
@@ -35,9 +38,14 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AHBottomNavigationAdapter adapter;
+    private AHBottomNavigationAdapter navigationAdapter;
     private ArrayList<AHBottomNavigationItem> bottomNavigationItems = new ArrayList<>();
     private int[] tabColors;
+    private RecipeListFragment currentFragment;
+    private ViewPagerAdapter adapter;
+    private Handler handler = new Handler();
+
+
 
     // UI
     private AHBottomNavigationViewPager viewPager;
@@ -48,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseHelper db;
     private ArrayList<Recipe> recipeList = new ArrayList<>();
 
-    public String url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita";
+//    public String url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita";
 
 
     @Override
@@ -61,11 +69,12 @@ public class MainActivity extends AppCompatActivity {
         db = new DatabaseHelper(this);
 //        recipeList.addAll(db.getAllRecipes());
 
-        run();
+        String url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita";
+        run(url);
 
     }
 
-    private void run(){
+    private void run(String url){
         Log.i("running", "11111");
 
 
@@ -156,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
     private void initBottomBar() {
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
+        viewPager = findViewById(R.id.view_pager);
 
         AHBottomNavigationItem item1 =
                 new AHBottomNavigationItem(R.string.bottomTitle1, R.drawable.ic_home_black_24dp, R.color.tab1);
@@ -175,25 +185,35 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
-                Fragment selectedFragment = null;
-
-                switch (position) {
-                    case 0:
-                        selectedFragment = new HomeFragment();
-                        break;
-                    case 1:
-                        selectedFragment = new SearchFragment();
-                        break;
-                    case 2:
-                        selectedFragment = new FavoriteFragment();
-                        break;
+                if (currentFragment == null) {
+                    currentFragment = adapter.getCurrentFragment();
                 }
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                if (wasSelected) {
+                    currentFragment.refresh();
+                    return true;
+                }
+
+                if (currentFragment != null){
+                    currentFragment.willBeHidden();
+                }
+
+                viewPager.setCurrentItem(position, false);
+                if (currentFragment == null) {
+                    return true;
+                }
+
+                currentFragment = adapter.getCurrentFragment();
+                currentFragment.willBeDisplayed();
 
                 return true;
             }
         });
+
+        viewPager.setOffscreenPageLimit(4);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        currentFragment = adapter.getCurrentFragment();
 
     }
 
