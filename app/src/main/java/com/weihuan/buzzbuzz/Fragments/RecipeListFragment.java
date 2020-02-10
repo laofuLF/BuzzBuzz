@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.weihuan.buzzbuzz.R;
 import com.weihuan.buzzbuzz.db.DatabaseHelper;
 import com.weihuan.buzzbuzz.db.Recipe;
+import com.weihuan.buzzbuzz.network.ImageDownloader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ public class RecipeListFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private DatabaseHelper db;
+    private CardView cardView;
 
 
     /**
@@ -45,26 +48,45 @@ public class RecipeListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        db = new DatabaseHelper(getActivity());
         View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
-        initRecipeList(view);
+        int tabIndex = getArguments().getInt("index", -1);
+        switch (tabIndex) {
+            case 2:
+                initMyRecipe(view);
+                break;
+        }
         return view;
     }
 
     /**
      * Init the fragment
      */
-    private void initRecipeList(View view) {
+    private void initMyRecipe(View view) {
 
         fragmentContainer = view.findViewById(R.id.fragment_container);
         recyclerView = view.findViewById(R.id.fragment_recycler_view);
+        cardView = view.findViewById(R.id.card_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        ArrayList<String> itemsData = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            itemsData.add("Fragment " + getArguments().getInt("index", -1) + " / Item " + i);
+        // test db data
+        ArrayList<String> cocktailNames = new ArrayList<>();
+        ArrayList<String> ImageUrls = new ArrayList<>();
+        List<Recipe> RecipeDatabase = new ArrayList<>();
+        RecipeDatabase.addAll(db.getAllRecipes());
+        for (Recipe recipeDB: RecipeDatabase) {
+            int id = recipeDB.getId();
+            Log.i("Database data:", String.valueOf(id));
+            cocktailNames.add(recipeDB.getRecipeName());
+            ImageUrls.add(recipeDB.getImage());
         }
+
+
+//        for (int i = 0; i < 50; i++) {
+//            cocktailNames.add("Fragment " + getArguments().getInt("index", -1) + " / Item " + i);
+//        }
 
 //        String url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita";
 
@@ -73,10 +95,10 @@ public class RecipeListFragment extends Fragment {
 //        for (Recipe recipeDB: RecipeDatabase) {
 //            String name = recipeDB.getRecipeName();
 //            Log.i("Database data:", String.valueOf(name));
-//            itemsData.add(name);
+//            cocktailNames.add(name);
 //        }
 
-        ListAdapter adapter = new ListAdapter(itemsData);
+        ListAdapter adapter = new ListAdapter(cocktailNames, ImageUrls);
         recyclerView.setAdapter(adapter);
     }
 

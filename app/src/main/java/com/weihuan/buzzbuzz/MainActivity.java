@@ -108,14 +108,13 @@ public class MainActivity extends AppCompatActivity {
                                 Log.i("item id is: ", String.valueOf(id));
 //                                db.insertRecipe(recipe); // insert into database
                             }
-                            // test db data
-                            List<Recipe> RecipeDatabase = new ArrayList<>();
-                            RecipeDatabase.addAll(db.getAllRecipes());
-                            for (Recipe recipeDB: RecipeDatabase) {
-                                int id = recipeDB.getId();
-                                Log.i("Database data:", String.valueOf(id));
-                            }
-
+//                            // test db data
+//                            List<Recipe> RecipeDatabase = new ArrayList<>();
+//                            RecipeDatabase.addAll(db.getAllRecipes());
+//                            for (Recipe recipeDB: RecipeDatabase) {
+//                                int id = recipeDB.getId();
+//                                Log.i("Database data:", String.valueOf(id));
+//                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -168,11 +167,11 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager);
 
         AHBottomNavigationItem item1 =
-                new AHBottomNavigationItem(R.string.bottomTitle1, R.drawable.ic_home_black_24dp, R.color.tab1);
+                new AHBottomNavigationItem(R.string.bottomTitle1, R.drawable.ic_whatshot_black_24dp, R.color.tab1);
         AHBottomNavigationItem item2 =
-                new AHBottomNavigationItem(R.string.bottomTitle2, R.drawable.ic_local_bar_black_24dp, R.color.tab2);
+                new AHBottomNavigationItem(R.string.bottomTitle2, R.drawable.ic_search_black_24dp, R.color.tab2);
         AHBottomNavigationItem item3 =
-                new AHBottomNavigationItem(R.string.bottomTitle3, R.drawable.ic_favorite_black_24dp, R.color.tab3);
+                new AHBottomNavigationItem(R.string.bottomTitle3, R.drawable.ic_local_bar_black_24dp, R.color.tab3);
 
 
         bottomNavigation.addItem(item1);

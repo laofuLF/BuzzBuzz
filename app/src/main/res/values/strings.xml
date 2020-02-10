@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">BuzzBuzz</string>
-    <string name="bottomTitle1">Discover</string>
-    <string name="bottomTitle2">Cocktails</string>
+    <string name="bottomTitle1">Popular</string>
+    <string name="bottomTitle2">Search</string>
     <string name="bottomTitle3">My Recipes</string>
+    <string name="tab1Title">Discover</string>
+    <string name="tab2Title">Search</string>
+    <string name="tab3Title">My Bar</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
