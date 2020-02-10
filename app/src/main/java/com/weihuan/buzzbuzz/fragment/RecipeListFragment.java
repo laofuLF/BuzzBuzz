@@ -1,4 +1,4 @@
-package com.weihuan.buzzbuzz.Fragments;
+package com.weihuan.buzzbuzz.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.weihuan.buzzbuzz.R;
 import com.weihuan.buzzbuzz.db.DatabaseHelper;
 import com.weihuan.buzzbuzz.db.Recipe;
-import com.weihuan.buzzbuzz.network.ImageDownloader;
 
 import java.util.ArrayList;
 import java.util.List;

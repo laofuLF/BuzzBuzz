@@ -1,4 +1,4 @@
-package com.weihuan.buzzbuzz.Fragments;
+package com.weihuan.buzzbuzz.fragment;
 
 import android.view.ViewGroup;
 
