@@ -3,25 +3,27 @@ package com.weihuan.buzzbuzz.fragment;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Bitmap;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.weihuan.buzzbuzz.R;
-import com.weihuan.buzzbuzz.network.ImageDownloader;
+import com.weihuan.buzzbuzz.db.Recipe;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
+import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
+    private Context context;
+    private List<Recipe> recipes = new ArrayList<>();
 
-    private ArrayList<String> dataSet = new ArrayList<>();
-    private ArrayList<String> imageSet = new ArrayList<>();
-    private ArrayList<Bitmap> bitmaps = new ArrayList<>();
-    private ImageDownloader imageDownloader;
+//    private ArrayList<String> dataSet = new ArrayList<>();
+////    private ArrayList<String> imageSet = new ArrayList<>();
+////    private ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
@@ -33,21 +35,23 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         }
     }
 
-    public ListAdapter(ArrayList<String> data, ArrayList<String> image) {
-        dataSet.clear();
-        dataSet.addAll(data);
-        imageSet.clear();
-        imageSet.addAll(image);
-        imageDownloader = new ImageDownloader();
-        try {
-            bitmaps = imageDownloader.execute(imageSet).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public ListAdapter(List<Recipe> newRecipes) {
 
+        recipes.clear();
+        recipes.addAll(newRecipes);
 
+//        dataSet.clear();
+//        dataSet.addAll(data);
+//        imageSet.clear();
+//        imageSet.addAll(image);
+//        imageDownloader = new ImageDownloader();
+//        try {
+//            bitmaps = imageDownloader.execute(imageSet).get();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
 
@@ -60,8 +64,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText(dataSet.get(position));
-        holder.imageView.setImageBitmap(bitmaps.get(position));
+        Recipe currentRecipe = recipes.get(position);
+        holder.textView.setText(currentRecipe.getRecipeName());
+        Picasso.get().load(currentRecipe.getImage()).into(holder.imageView);
 //        try {
 //            URL url = new URL(imageSet.get(position));
 //            Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
@@ -75,7 +80,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        return recipes.size();
     }
 
 }

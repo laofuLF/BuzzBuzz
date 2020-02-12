@@ -1,5 +1,7 @@
 package com.weihuan.buzzbuzz.db;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Recipe {
 
     public static final String TABLE_NAME = "recipes";
@@ -8,10 +10,13 @@ public class Recipe {
     public static final String COLUMN_GLASS = "glass";
     public static final String COLUMN_IMAGE = "image";
 
-
+    @SerializedName("idDrink")
     private int id;
+    @SerializedName("strDrink")
     private String recipeName;
+    @SerializedName("strGlass")
     private String glass;
+    @SerializedName("strDrinkThumb")
     private String image;
 
     // Create table SQL query
