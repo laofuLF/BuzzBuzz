@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.weihuan.buzzbuzz.MainActivity;
 import com.weihuan.buzzbuzz.R;
 import com.weihuan.buzzbuzz.db.DatabaseHelper;
 import com.weihuan.buzzbuzz.db.Recipe;
@@ -100,14 +102,30 @@ public class RecipeListFragment extends Fragment {
     }
 
     private void initPopular(View view) {
+        editQuery.setVisibility(View.GONE);
+        searchIcon.setVisibility(View.GONE);
         tabTitle.setText(R.string.tab1Title);
-        fetchRecipes();
+        List<Recipe> randomRecipes = new ArrayList<>();
+        fetchRandomRecipes(0, randomRecipes);
+
+//        for (int i = 0; i < 10; i++) {
+//            data.addAll(fetchRandomRecipes());
+//        }
+
     }
 
     private void initSearch(View view) {
         Log.i("initSearch:", "1111111111111");
-
+        editQuery.setVisibility(View.VISIBLE);
+        searchIcon.setVisibility(View.VISIBLE);
         tabTitle.setText(R.string.tab2Title);
+        searchIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = editQuery.getText().toString();
+                fetchRecipes(query);
+            }
+        });
 
     }
 
@@ -116,6 +134,8 @@ public class RecipeListFragment extends Fragment {
      */
     private void initMyRecipe(View view) {
         tabTitle.setText(R.string.tab3Title);
+        editQuery.setVisibility(View.GONE);
+        searchIcon.setVisibility(View.GONE);
         // test db data
         List<Recipe> RecipeDatabase = new ArrayList<>();
         RecipeDatabase.addAll(db.getAllRecipes());
@@ -123,6 +143,9 @@ public class RecipeListFragment extends Fragment {
             int id = recipeDB.getId();
             Log.i("Database data:", String.valueOf(id));
         }
+        ListAdapter adapter = new ListAdapter(RecipeDatabase);
+        recyclerView.setAdapter(adapter);
+
 
 
 //        for (int i = 0; i < 50; i++) {
@@ -139,11 +162,10 @@ public class RecipeListFragment extends Fragment {
 //            cocktailNames.add(name);
 //        }
 
-        ListAdapter adapter = new ListAdapter(RecipeDatabase);
-        recyclerView.setAdapter(adapter);
+
     }
 
-    private void fetchRecipes() {
+    private void fetchRecipes(String query) {
         Log.i("fetched:", "111111111");
         if (retrofit == null) {
             Log.i("fetched:", "retrofit = null");
@@ -154,7 +176,7 @@ public class RecipeListFragment extends Fragment {
         }
 
         RecipeApiService recipeApiService = retrofit.create(RecipeApiService.class);
-        Call<RecipeResponse> call = recipeApiService.getRecipes("vodka");
+        Call<RecipeResponse> call = recipeApiService.getRecipes(query);
         call.enqueue(new Callback<RecipeResponse>() {
             @Override
             public void onResponse(Call<RecipeResponse> call, Response<RecipeResponse> response) {
@@ -164,8 +186,49 @@ public class RecipeListFragment extends Fragment {
 //                for (Recipe recipe: data) {
 //                    db.insertRecipe(recipe);
 //                }
-                ListAdapter adapter = new ListAdapter(data);
-                recyclerView.setAdapter(adapter);
+                if (data != null) {
+                    ListAdapter adapter = new ListAdapter(data);
+                    recyclerView.setAdapter(adapter);
+                }else {
+                    Toast.makeText(getActivity(), "No Result Found", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecipeResponse> call, Throwable t) {
+                Log.i("failed:", "11111111111111");
+            }
+        });
+    }
+
+
+    private void fetchRandomRecipes(int nRandom, List<Recipe> randomRecipes) {
+        Log.i("random fetched:", "111111111");
+        if (retrofit == null) {
+            Log.i("fetched:", "retrofit = null");
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+
+        RecipeApiService recipeApiService = retrofit.create(RecipeApiService.class);
+        Call<RecipeResponse> call = recipeApiService.getRandomRecipes();
+        call.enqueue(new Callback<RecipeResponse>() {
+            @Override
+            public void onResponse(Call<RecipeResponse> call, Response<RecipeResponse> response) {
+                Log.i("random_responded:", response.body().toString());
+                RecipeResponse recipeResponse = response.body();
+                randomRecipes.addAll(recipeResponse.getRecipes());
+                if (nRandom < 10) {
+                    fetchRandomRecipes(nRandom + 1, randomRecipes);
+                }else {
+                    ListAdapter adapter = new ListAdapter(randomRecipes);
+                    recyclerView.setAdapter(adapter);
+                }
+//                for (Recipe recipe: data) {
+//                    db.insertRecipe(recipe);
+//                }
             }
 
             @Override
