@@ -80,8 +80,8 @@ public class RecipeListFragment extends Fragment {
 
         tabTitle = view.findViewById(R.id.tabTitle);
 
-//        editQuery = (EditText) view.findViewById(R.id.)
-//        searchIcon = view.findViewById(R.id.searc)
+        editQuery = (EditText) view.findViewById(R.id.edit_query);
+        searchIcon = view.findViewById(R.id.search_mag_icon);
 
 
         int tabIndex = getArguments().getInt("index", -1);
