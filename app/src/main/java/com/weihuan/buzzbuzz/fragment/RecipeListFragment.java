@@ -1,5 +1,6 @@
 package com.weihuan.buzzbuzz.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.weihuan.buzzbuzz.R;
+import com.weihuan.buzzbuzz.RecipeDetails;
 import com.weihuan.buzzbuzz.db.DatabaseHelper;
 import com.weihuan.buzzbuzz.db.Recipe;
 import com.weihuan.buzzbuzz.network.RecipeApiService;
@@ -270,7 +272,9 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     @Override
     public void onRecipeClick(int position) {
         Log.d(TAG, "onRecipeClick: " + position);
-
+        Intent intent = new Intent(getActivity(), RecipeDetails.class);
+        intent.putExtra("test", position + "");
+        startActivity(intent);
     }
 }
 
