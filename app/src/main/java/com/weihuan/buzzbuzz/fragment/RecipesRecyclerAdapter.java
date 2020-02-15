@@ -17,32 +17,37 @@ import com.weihuan.buzzbuzz.db.Recipe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
+public class RecipesRecyclerAdapter extends RecyclerView.Adapter<RecipesRecyclerAdapter.ViewHolder> {
     private Context context;
     private List<Recipe> recipes = new ArrayList<>();
+    private OnRecipeListener mOnRecipeListener;
 
 
-//    private ArrayList<String> dataSet = new ArrayList<>();
-////    private ArrayList<String> imageSet = new ArrayList<>();
-////    private ArrayList<Bitmap> bitmaps = new ArrayList<>();
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView textView;
         public ImageView imageView;
         public TextView category;
-
-        public ViewHolder(View v) {
+        OnRecipeListener onRecipeListener;
+        public ViewHolder(View v, OnRecipeListener onRecipeListener) {
             super(v);
             textView = (TextView) v.findViewById(R.id.layout_recipe_title);
             imageView = (ImageView) v.findViewById(R.id.cocktailImage);
             category = v.findViewById(R.id.category);
+            this.onRecipeListener = onRecipeListener;
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onRecipeListener.onRecipeClick(getAdapterPosition());
         }
     }
 
-    public ListAdapter(List<Recipe> newRecipes) {
+    public RecipesRecyclerAdapter(List<Recipe> newRecipes, OnRecipeListener onRecipeListener) {
 
         recipes.clear();
         recipes.addAll(newRecipes);
+        this.mOnRecipeListener = onRecipeListener;
 
 //        dataSet.clear();
 //        dataSet.addAll(data);
@@ -60,9 +65,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
 
     @Override
-    public ListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecipesRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
+        ViewHolder vh = new ViewHolder(v, mOnRecipeListener);
         return vh;
     }
 
@@ -88,7 +93,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         return recipes.size();
     }
 
-    public interface onRecipeListener {
+    public interface OnRecipeListener {
         void onRecipeClick(int position);
     }
 

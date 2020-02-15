@@ -20,16 +20,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.weihuan.buzzbuzz.MainActivity;
 import com.weihuan.buzzbuzz.R;
 import com.weihuan.buzzbuzz.db.DatabaseHelper;
 import com.weihuan.buzzbuzz.db.Recipe;
 import com.weihuan.buzzbuzz.network.RecipeApiService;
 import com.weihuan.buzzbuzz.network.RecipeResponse;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +35,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RecipeListFragment extends Fragment {
+
+
+public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapter.OnRecipeListener {
     public static final String BASE_URL = "https://www.thecocktaildb.com/api/json/v1/1/";
+    private static final String TAG = "RecipeListFragment";
 
     private FrameLayout fragmentContainer;
     private RecyclerView recyclerView;
@@ -54,6 +52,8 @@ public class RecipeListFragment extends Fragment {
     private ImageView searchIcon;
     private Retrofit retrofit = null;
     private List<Recipe> data;
+    RecipesRecyclerAdapter adapter;
+
 
 
     /**
@@ -143,7 +143,7 @@ public class RecipeListFragment extends Fragment {
             int id = recipeDB.getId();
             Log.i("Database data:", String.valueOf(id));
         }
-        ListAdapter adapter = new ListAdapter(RecipeDatabase);
+        adapter = new RecipesRecyclerAdapter(RecipeDatabase, this);
         recyclerView.setAdapter(adapter);
 
 
@@ -187,8 +187,8 @@ public class RecipeListFragment extends Fragment {
 //                    db.insertRecipe(recipe);
 //                }
                 if (data != null) {
-                    ListAdapter adapter = new ListAdapter(data);
-                    recyclerView.setAdapter(adapter);
+//                    adapter = new RecipesRecyclerAdapter(data, );
+//                    recyclerView.setAdapter(adapter);
                 }else {
                     Toast.makeText(getActivity(), "No Result Found", Toast.LENGTH_LONG).show();
                 }
@@ -223,8 +223,8 @@ public class RecipeListFragment extends Fragment {
                 if (nRandom < 10) {
                     fetchRandomRecipes(nRandom + 1, randomRecipes);
                 }else {
-                    ListAdapter adapter = new ListAdapter(randomRecipes);
-                    recyclerView.setAdapter(adapter);
+//                    adapter = new RecipesRecyclerAdapter(randomRecipes, this);
+//                    recyclerView.setAdapter(adapter);
                 }
 //                for (Recipe recipe: data) {
 //                    db.insertRecipe(recipe);
@@ -267,6 +267,11 @@ public class RecipeListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onRecipeClick(int position) {
+        Log.d(TAG, "onRecipeClick: " + position);
+
+    }
 }
 
 
