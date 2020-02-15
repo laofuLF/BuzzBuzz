@@ -49,12 +49,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String recipeName = recipe.getRecipeName();
         String recipeGlass = recipe.getGlass();
         String recipeImage = recipe.getImage();
+        String instructions = recipe.getInstructions();
+        String category = recipe.getCategory();
 
         // input all values of this piece of data
         values.put(Recipe.COLUMN_ID, id);
         values.put(Recipe.COLUMN_RECIPE_NAME, recipeName);
         values.put(Recipe.COLUMN_GLASS, recipeGlass);
         values.put(Recipe.COLUMN_IMAGE, recipeImage);
+        values.put(Recipe.COLUMN_INSTRUCTIONS, instructions);
+        values.put(Recipe.COLUMN_CATEGORY, category);
 
         db.insert(Recipe.TABLE_NAME, null, values);
         db.close();
@@ -78,7 +82,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 cursor.getInt(cursor.getColumnIndex(Recipe.COLUMN_ID)),
                 cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_RECIPE_NAME)),
                 cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_GLASS)),
-                cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_IMAGE))
+                cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_IMAGE)),
+                cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_INSTRUCTIONS)),
+                cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_CATEGORY))
         );
 
         cursor.close();

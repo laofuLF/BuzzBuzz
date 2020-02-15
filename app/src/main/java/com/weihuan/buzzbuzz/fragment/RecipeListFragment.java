@@ -267,28 +267,6 @@ public class RecipeListFragment extends Fragment {
         }
     }
 
-    private List<Recipe> getData(String result) throws JSONException {
-        List<Recipe> recipes = new ArrayList<>();
-        JSONObject reader = new JSONObject(result);
-        JSONArray recipeListJS = reader.getJSONArray("drinks");
-        int count = recipeListJS.length();
-
-        for (int i = 0; i < count; i++) {
-            JSONObject currentRecipeJS = recipeListJS.getJSONObject(i);
-            int id = currentRecipeJS.getInt("idDrink");
-            String recipeName = currentRecipeJS.getString("strDrink");
-            String glass = currentRecipeJS.getString("strGlass");
-            String imageUrl = currentRecipeJS.getString("strDrinkThumb");
-            Recipe currentData = new Recipe(id, recipeName, glass, imageUrl);
-            data.add(currentData);
-            Log.i("id: ", String.valueOf(id));
-            Log.i("Name: ", recipeName);
-            Log.i("Glass: ", glass);
-            Log.i("Image: ", imageUrl);
-        }
-        return recipes;
-    }
-
 }
 
 

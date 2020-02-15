@@ -21,6 +21,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private Context context;
     private List<Recipe> recipes = new ArrayList<>();
 
+
 //    private ArrayList<String> dataSet = new ArrayList<>();
 ////    private ArrayList<String> imageSet = new ArrayList<>();
 ////    private ArrayList<Bitmap> bitmaps = new ArrayList<>();
@@ -28,10 +29,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         public ImageView imageView;
+        public TextView category;
+
         public ViewHolder(View v) {
             super(v);
             textView = (TextView) v.findViewById(R.id.layout_recipe_title);
             imageView = (ImageView) v.findViewById(R.id.cocktailImage);
+            category = v.findViewById(R.id.category);
         }
     }
 
@@ -67,6 +71,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         Recipe currentRecipe = recipes.get(position);
         holder.textView.setText(currentRecipe.getRecipeName());
         Picasso.get().load(currentRecipe.getImage()).into(holder.imageView);
+        holder.category.setText(currentRecipe.getCategory());
 //        try {
 //            URL url = new URL(imageSet.get(position));
 //            Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
@@ -81,6 +86,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return recipes.size();
+    }
+
+    public interface onRecipeListener {
+        void onRecipeClick(int position);
     }
 
 }

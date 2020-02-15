@@ -19,13 +19,32 @@
             android:id="@+id/cocktailImage"
             android:adjustViewBounds="true"/>
 
-        <TextView
-            android:id="@+id/layout_recipe_title"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:padding="16dp"
-            android:textSize="18sp"/>
+            android:orientation="vertical"
+            android:layout_gravity="end">
+
+            <TextView
+                android:id="@+id/layout_recipe_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:padding="16dp"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="13sp"
+                android:layout_gravity="right"
+                android:id="@+id/category"/>
+
+        </LinearLayout>
+
+
+
 
     </androidx.cardview.widget.CardView>
 

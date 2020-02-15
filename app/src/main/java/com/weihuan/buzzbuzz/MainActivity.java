@@ -69,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
         String url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita";
 //        run(url);
 
-        httpRequest = new HttpRequest(url);
-        httpRequest.run(url);
-        httpRequest.getRecipes();
+//        httpRequest = new HttpRequest(url);
+//        httpRequest.run(url);
+//        httpRequest.getRecipes();
     }
 
 

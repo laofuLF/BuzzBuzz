@@ -29,6 +29,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/edit_query"
                 android:layout_weight="1"
+                android:maxLines="1"
+                android:lines="1"
+
+                android:paddingLeft="5dp"
                 android:hint="search cocktails or ingredients"/>
 
             <ImageView
