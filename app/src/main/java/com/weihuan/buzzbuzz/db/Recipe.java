@@ -1,8 +1,12 @@
 package com.weihuan.buzzbuzz.db;
 
-import com.google.gson.annotations.SerializedName;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Recipe {
+import com.google.gson.annotations.SerializedName;
+import com.weihuan.buzzbuzz.R;
+
+public class Recipe implements Parcelable {
 
     public static final String TABLE_NAME = "recipes";
     public static final String COLUMN_ID = "id";
@@ -51,8 +55,6 @@ public class Recipe {
     public static final String DELETE_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-    public Recipe(){
-    }
 
     public Recipe(int id, String recipeName, String glass, String image, String instructions, String category) {
         this.id = id;
@@ -63,6 +65,69 @@ public class Recipe {
         this.category = category;
 
     }
+
+    public Recipe(Parcel in) {
+        this.id = in.readInt();
+        this.recipeName = in.readString();
+        this.glass = in.readString();
+        this.image = in.readString();
+        this.instructions = in.readString();
+        this.category = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /**
+     * Actual object serialization happens here, write object content to parcel
+     * one by one, reading should be done according to its order.
+     * flat means how the object should be written
+     * @param dest
+     * @param flags
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(recipeName);
+        dest.writeString(glass);
+        dest.writeString(image);
+        dest.writeString(instructions);
+        dest.writeString(category);
+    }
+
+    /**
+     * This part is needed for Android to be able to create new objects, individually or as arrays
+     */
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel source) {
+            return new Recipe((source));
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+
+    };
+
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Recipe) {
+            Recipe toCompare = (Recipe) object;
+            return (this.recipeName.equalsIgnoreCase((toCompare.getRecipeName())));
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return (this.getRecipeName().hashCode());
+    }
+
 
     public int getId() {
         return id;
@@ -103,4 +168,6 @@ public class Recipe {
     public String getInstructions() {
         return instructions;
     }
+
+
 }
