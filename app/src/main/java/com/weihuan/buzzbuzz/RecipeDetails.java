@@ -20,9 +20,10 @@ public class RecipeDetails extends AppCompatActivity {
         TextView layoutTitle = findViewById(R.id.detailRecipeTitle);
         TextView instructions = findViewById(R.id.detailRecipeInstruction);
         Intent intent = getIntent();
-        String test2 = intent.getStringExtra("test");
+        String test2 = intent.getStringExtra("instructions");
 
-        layoutTitle.setText(test2);
+//        layoutTitle.setText(test2);
+        instructions.setText(test2);
 
     }
 }

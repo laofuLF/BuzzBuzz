@@ -55,6 +55,10 @@ public class Recipe implements Parcelable {
     public static final String DELETE_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
+    public Recipe() {
+
+    }
+
 
     public Recipe(int id, String recipeName, String glass, String image, String instructions, String category) {
         this.id = id;
@@ -165,8 +169,16 @@ public class Recipe implements Parcelable {
         return category;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public String getInstructions() {
         return instructions;
+    }
+
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
     }
 
 

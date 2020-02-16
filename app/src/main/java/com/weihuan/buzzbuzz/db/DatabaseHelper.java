@@ -110,6 +110,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 current.setRecipeName(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_RECIPE_NAME)));
                 current.setGlass(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_GLASS)));
                 current.setImage(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_IMAGE)));
+                current.setCategory((cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_CATEGORY))));
+                current.setInstructions(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_INSTRUCTIONS)));
                 recipes.add(current);
             } while (cursor.moveToNext());
         }

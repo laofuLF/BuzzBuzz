@@ -140,13 +140,15 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
         searchIcon.setVisibility(View.GONE);
         // test db data
         List<Recipe> RecipeDatabase = new ArrayList<>();
-        RecipeDatabase.addAll(db.getAllRecipes());
-        for (Recipe recipeDB: RecipeDatabase) {
-            int id = recipeDB.getId();
-            Log.i("Database data:", String.valueOf(id));
-        }
-        adapter = new RecipesRecyclerAdapter(RecipeDatabase, this);
-        recyclerView.setAdapter(adapter);
+//        db.deleteTable();
+
+//        RecipeDatabase.addAll(db.getAllRecipes());
+//        for (Recipe recipeDB: RecipeDatabase) {
+//            int id = recipeDB.getId();
+//            Log.i("Database data:", String.valueOf(id));
+//        }
+//        adapter = new RecipesRecyclerAdapter(RecipeDatabase, this);
+//        recyclerView.setAdapter(adapter);
 
 
 
@@ -189,8 +191,8 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
 //                    db.insertRecipe(recipe);
 //                }
                 if (data != null) {
-//                    adapter = new RecipesRecyclerAdapter(data, );
-//                    recyclerView.setAdapter(adapter);
+                    adapter = new RecipesRecyclerAdapter(data, RecipeListFragment.this);
+                    recyclerView.setAdapter(adapter);
                 }else {
                     Toast.makeText(getActivity(), "No Result Found", Toast.LENGTH_LONG).show();
                 }
@@ -225,8 +227,8 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
                 if (nRandom < 10) {
                     fetchRandomRecipes(nRandom + 1, randomRecipes);
                 }else {
-//                    adapter = new RecipesRecyclerAdapter(randomRecipes, this);
-//                    recyclerView.setAdapter(adapter);
+                    adapter = new RecipesRecyclerAdapter(randomRecipes, RecipeListFragment.this);
+                    recyclerView.setAdapter(adapter);
                 }
 //                for (Recipe recipe: data) {
 //                    db.insertRecipe(recipe);
@@ -273,7 +275,7 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     public void onRecipeClick(int position) {
         Log.d(TAG, "onRecipeClick: " + position);
         Intent intent = new Intent(getActivity(), RecipeDetails.class);
-        intent.putExtra("test", position + "");
+        intent.putExtra("instructions", position + "");
         startActivity(intent);
     }
 }
