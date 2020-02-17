@@ -37,6 +37,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void resetTable() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(Recipe.DELETE_TABLE);
+        db.execSQL(Recipe.CREATE_TABLE);
+        db.close();
+
+    }
+
+
+    public void insertRecipes(List<Recipe> recipes) {
+        for (Recipe currentRecipe: recipes) {
+            insertRecipe(currentRecipe);
+        }
+    }
+
 
     public void insertRecipe(Recipe recipe) {
 

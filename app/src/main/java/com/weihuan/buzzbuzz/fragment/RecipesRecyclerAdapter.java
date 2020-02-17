@@ -46,8 +46,11 @@ public class RecipesRecyclerAdapter extends RecyclerView.Adapter<RecipesRecycler
     public RecipesRecyclerAdapter(List<Recipe> newRecipes, OnRecipeListener onRecipeListener) {
 
         recipes.clear();
-        recipes.addAll(newRecipes);
-        this.mOnRecipeListener = onRecipeListener;
+        if (newRecipes != null){
+            recipes.addAll(newRecipes);
+            this.mOnRecipeListener = onRecipeListener;
+        }
+
 
 //        dataSet.clear();
 //        dataSet.addAll(data);

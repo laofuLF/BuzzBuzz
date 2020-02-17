@@ -3,6 +3,7 @@ package com.weihuan.buzzbuzz.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,6 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
 //    private TextView tabTitle;
     private EditText editQuery;
     private TextView tabTitle;
-    private ImageView searchIcon;
     private Retrofit retrofit = null;
     private List<Recipe> data;
     RecipesRecyclerAdapter adapter;
@@ -85,7 +85,6 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
         tabTitle = view.findViewById(R.id.tabTitle);
 
         editQuery = (EditText) view.findViewById(R.id.edit_query);
-        searchIcon = view.findViewById(R.id.search_mag_icon);
 
 
         int tabIndex = getArguments().getInt("index", -1);
@@ -105,7 +104,6 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
 
     private void initPopular(View view) {
         editQuery.setVisibility(View.GONE);
-        searchIcon.setVisibility(View.GONE);
         tabTitle.setText(R.string.tab1Title);
         List<Recipe> randomRecipes = new ArrayList<>();
         fetchRandomRecipes(0, randomRecipes);
@@ -119,16 +117,17 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     private void initSearch(View view) {
         Log.i("initSearch:", "1111111111111");
         editQuery.setVisibility(View.VISIBLE);
-        searchIcon.setVisibility(View.VISIBLE);
-        tabTitle.setText(R.string.tab2Title);
-        searchIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        editQuery.setImeActionLabel("SEARCH", KeyEvent.KEYCODE_ENTER);
+        editQuery.setOnKeyListener((v, keyCode, event) -> {
+            if ((event.getAction() == KeyEvent.ACTION_DOWN)
+                    && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 String query = editQuery.getText().toString();
                 fetchRecipes(query);
+                return true;
             }
+            return false;
         });
-
+        tabTitle.setText(R.string.tab2Title);
     }
 
     /**
@@ -137,18 +136,17 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     private void initMyRecipe(View view) {
         tabTitle.setText(R.string.tab3Title);
         editQuery.setVisibility(View.GONE);
-        searchIcon.setVisibility(View.GONE);
         // test db data
         List<Recipe> RecipeDatabase = new ArrayList<>();
 //        db.deleteTable();
 
-//        RecipeDatabase.addAll(db.getAllRecipes());
-//        for (Recipe recipeDB: RecipeDatabase) {
-//            int id = recipeDB.getId();
-//            Log.i("Database data:", String.valueOf(id));
-//        }
-//        adapter = new RecipesRecyclerAdapter(RecipeDatabase, this);
-//        recyclerView.setAdapter(adapter);
+        RecipeDatabase.addAll(db.getAllRecipes());
+        for (Recipe recipeDB: RecipeDatabase) {
+            int id = recipeDB.getId();
+            Log.i("Database data:", String.valueOf(id));
+        }
+        adapter = new RecipesRecyclerAdapter(RecipeDatabase, this);
+        recyclerView.setAdapter(adapter);
 
 
 
@@ -194,7 +192,10 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
                     adapter = new RecipesRecyclerAdapter(data, RecipeListFragment.this);
                     recyclerView.setAdapter(adapter);
                 }else {
+                    adapter = new RecipesRecyclerAdapter(data, RecipeListFragment.this);
+                    recyclerView.setAdapter(adapter);
                     Toast.makeText(getActivity(), "No Result Found", Toast.LENGTH_LONG).show();
+
                 }
             }
 
@@ -229,6 +230,7 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
                 }else {
                     adapter = new RecipesRecyclerAdapter(randomRecipes, RecipeListFragment.this);
                     recyclerView.setAdapter(adapter);
+//                    db.insertRecipes(randomRecipes);
                 }
 //                for (Recipe recipe: data) {
 //                    db.insertRecipe(recipe);
