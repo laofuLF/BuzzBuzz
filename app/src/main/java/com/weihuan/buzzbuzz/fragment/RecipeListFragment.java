@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
 
     private FrameLayout fragmentContainer;
     private RecyclerView recyclerView;
+    private RecyclerView horizontalScrollView;
     private RecyclerView.LayoutManager layoutManager;
     private DatabaseHelper db;
     private CardView cardView;
@@ -54,6 +56,9 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     private TextView tabTitle;
     private Retrofit retrofit = null;
     private List<Recipe> data;
+    private HorizontalAdapter horizontalAdapter;
+    private LinearLayoutManager horizontalLayout;
+
     RecipesRecyclerAdapter adapter;
 
 
@@ -77,10 +82,14 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
         View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
         fragmentContainer = view.findViewById(R.id.fragment_container);
         recyclerView = view.findViewById(R.id.fragment_recycler_view);
+        horizontalScrollView = view.findViewById(R.id.horizontal_recycler_view);
         cardView = view.findViewById(R.id.card_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+//        horizontalScrollView.setLayoutManager(layoutManager);
+        horizontalLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        horizontalScrollView.setLayoutManager(horizontalLayout);
 
         tabTitle = view.findViewById(R.id.tabTitle);
 
@@ -138,14 +147,15 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
         editQuery.setVisibility(View.GONE);
         // test db data
         List<Recipe> RecipeDatabase = new ArrayList<>();
-//        db.deleteTable();
 
+//        db.resetTable();
         RecipeDatabase.addAll(db.getAllRecipes());
         for (Recipe recipeDB: RecipeDatabase) {
             int id = recipeDB.getId();
             Log.i("Database data:", String.valueOf(id));
         }
-        adapter = new RecipesRecyclerAdapter(RecipeDatabase, this);
+        data = RecipeDatabase;
+        adapter = new RecipesRecyclerAdapter(data, this);
         recyclerView.setAdapter(adapter);
 
 
@@ -231,6 +241,9 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
                     data = randomRecipes;
                     adapter = new RecipesRecyclerAdapter(data, RecipeListFragment.this);
                     recyclerView.setAdapter(adapter);
+                    horizontalAdapter = new HorizontalAdapter(data, RecipeListFragment.this);
+                    horizontalScrollView.setAdapter(horizontalAdapter);
+
 //                    db.insertRecipes(randomRecipes);
                 }
 //                for (Recipe recipe: data) {

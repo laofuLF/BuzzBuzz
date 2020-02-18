@@ -20,6 +20,12 @@
             android:padding="10dp"
             android:text="Tab"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/horizontal_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,6 +42,7 @@
                 android:inputType="text|textNoSuggestions"
                 android:paddingLeft="5dp"
                 android:hint="search cocktails or ingredients"/>
+
 
         </LinearLayout>
 
