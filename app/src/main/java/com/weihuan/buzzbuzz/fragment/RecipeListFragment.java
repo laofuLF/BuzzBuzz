@@ -228,7 +228,8 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
                 if (nRandom < 10) {
                     fetchRandomRecipes(nRandom + 1, randomRecipes);
                 }else {
-                    adapter = new RecipesRecyclerAdapter(randomRecipes, RecipeListFragment.this);
+                    data = randomRecipes;
+                    adapter = new RecipesRecyclerAdapter(data, RecipeListFragment.this);
                     recyclerView.setAdapter(adapter);
 //                    db.insertRecipes(randomRecipes);
                 }
@@ -276,8 +277,13 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     @Override
     public void onRecipeClick(int position) {
         Log.d(TAG, "onRecipeClick: " + position);
+        Log.d(TAG, "onRecipeClick: " + data.get(position).getInstructions());
+        Recipe currenRecipe = data.get(position);
         Intent intent = new Intent(getActivity(), RecipeDetails.class);
-        intent.putExtra("instructions", position + "");
+        intent.putExtra("instructions", currenRecipe.getInstructions());
+        intent.putExtra("name", currenRecipe.getRecipeName());
+        intent.putExtra("image", currenRecipe.getImage());
+        intent.putExtra("glass", currenRecipe.getGlass());
         startActivity(intent);
     }
 }
