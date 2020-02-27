@@ -50,6 +50,16 @@ public class Recipe implements Parcelable {
     private String ingredient9;
     @SerializedName("strIngredient10")
     private String ingredient10;
+    @SerializedName("strIngredient11")
+    private String ingredient11;
+    @SerializedName("strIngredient12")
+    private String ingredient12;
+    @SerializedName("strIngredient13")
+    private String ingredient13;
+    @SerializedName("strIngredient14")
+    private String ingredient14;
+    @SerializedName("strIngredient15")
+    private String ingredient15;
     @SerializedName("strMeasure1")
     private String measurement1;
     @SerializedName("strMeasure2")
@@ -70,6 +80,99 @@ public class Recipe implements Parcelable {
     private String measurement9;
     @SerializedName("strMeasure10")
     private String measurement10;
+    @SerializedName("strMeasure11")
+    private String measurement11;
+    @SerializedName("strMeasure12")
+    private String measurement12;
+    @SerializedName("strMeasure13")
+    private String measurement13;
+    @SerializedName("strMeasure14")
+    private String measurement14;
+    @SerializedName("strMeasure15")
+    private String measurement15;
+
+    public String getIngredient11() {
+        return ingredient11;
+    }
+
+    public void setIngredient11(String ingredient11) {
+        this.ingredient11 = ingredient11;
+    }
+
+    public String getIngredient12() {
+        return ingredient12;
+    }
+
+    public void setIngredient12(String ingredient12) {
+        this.ingredient12 = ingredient12;
+    }
+
+    public String getIngredient13() {
+        return ingredient13;
+    }
+
+    public void setIngredient13(String ingredient13) {
+        this.ingredient13 = ingredient13;
+    }
+
+    public String getIngredient14() {
+        return ingredient14;
+    }
+
+    public void setIngredient14(String ingredient14) {
+        this.ingredient14 = ingredient14;
+    }
+
+    public String getIngredient15() {
+        return ingredient15;
+    }
+
+    public void setIngredient15(String ingredient15) {
+        this.ingredient15 = ingredient15;
+    }
+
+
+
+    public String getMeasurement11() {
+        return measurement11;
+    }
+
+    public void setMeasurement11(String measurement11) {
+        this.measurement11 = measurement11;
+    }
+
+    public String getMeasurement12() {
+        return measurement12;
+    }
+
+    public void setMeasurement12(String measurement12) {
+        this.measurement12 = measurement12;
+    }
+
+    public String getMeasurement13() {
+        return measurement13;
+    }
+
+    public void setMeasurement13(String measurement13) {
+        this.measurement13 = measurement13;
+    }
+
+    public String getMeasurement14() {
+        return measurement14;
+    }
+
+    public void setMeasurement14(String measurement14) {
+        this.measurement14 = measurement14;
+    }
+
+    public String getMeasurement15() {
+        return measurement15;
+    }
+
+    public void setMeasurement15(String measurement15) {
+        this.measurement15 = measurement15;
+    }
+
 
     // Create table SQL query
     public static final String CREATE_TABLE =
@@ -84,9 +187,7 @@ public class Recipe implements Parcelable {
     public static final String DELETE_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-    public Recipe() {
-
-    }
+    public Recipe() {}
 
 
 //    public Recipe(int id, String recipeName, String glass, String image,
@@ -141,6 +242,21 @@ public class Recipe implements Parcelable {
         if (ingredient10 != null) {
             allIngredients.add(ingredient10);
         }
+        if (ingredient11 != null) {
+            allIngredients.add(ingredient11);
+        }
+        if (ingredient12 != null) {
+            allIngredients.add(ingredient12);
+        }
+        if (ingredient13 != null) {
+            allIngredients.add(ingredient13);
+        }
+        if (ingredient14 != null) {
+            allIngredients.add(ingredient14);
+        }
+        if (ingredient15 != null) {
+            allIngredients.add(ingredient15);
+        }
         return allIngredients;
     }
 
@@ -175,6 +291,21 @@ public class Recipe implements Parcelable {
         }
         if (measurement10 != null) {
             allMeasurements.add(measurement10);
+        }
+        if (measurement11 != null) {
+            allMeasurements.add(measurement11);
+        }
+        if (measurement12 != null) {
+            allMeasurements.add(measurement12);
+        }
+        if (measurement13 != null) {
+            allMeasurements.add(measurement13);
+        }
+        if (measurement14 != null) {
+            allMeasurements.add(measurement14);
+        }
+        if (measurement15 != null) {
+            allMeasurements.add(measurement15);
         }
         return allMeasurements;
     }

@@ -13,4 +13,8 @@ public interface RecipeApiService {
     //https://www.thecocktaildb.com/api/json/v1/1/random.php
     @GET("random.php")
     Call<RecipeResponse> getRandomRecipes();
+
+    //https://www.thecocktaildb.com/api/json/v1/1/search.php?i=brandy
+    @GET("search.php")
+    Call<IngredientResponse> getIngredient(@Query("i") String query);
 }

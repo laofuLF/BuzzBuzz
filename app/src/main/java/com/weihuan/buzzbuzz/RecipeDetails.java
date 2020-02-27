@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,7 +36,17 @@ public class RecipeDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
+        initView();
+    }
 
+//    private void getMap(ArrayList<String> ingredients, ArrayList<String> measurements) {
+//        ingredientMesurementMap.clear();
+//        for (int i = 0; i < ingredients.size(); i++) {
+//            ingredientMesurementMap.put(ingredients.get(i), measurements.get(i));
+//        }
+//    }
+
+    private void initView() {
         TextView layoutTitle = findViewById(R.id.detailRecipeTitle);
         TextView instructions = findViewById(R.id.detailRecipeInstruction);
         ImageView detailImage = findViewById(R.id.detailsImage);
@@ -48,29 +59,27 @@ public class RecipeDetails extends AppCompatActivity {
         ingredients = intent.getStringArrayListExtra("ingredients");
         measurements = intent.getStringArrayListExtra("measurements");
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ingredientsListView.getLayoutParams();
-        params.height = 100 * ingredients.size();
+        params.height = 150 * ingredients.size();
         ingredientsListView.setLayoutParams(params);
-
 //        getMap(ingredients, measurements);
         IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(ingredients, measurements);
         ingredientsListView.setAdapter(ingredientsAdapter);
-
         Log.d(TAG, "onCreate: " + instruction);
         Log.d(TAG, "onCreate: " + ingredients);
-
-
 //        layoutTitle.setText(test2);
         Picasso.get().load(image).into(detailImage);
         instructions.setText(instruction);
         layoutTitle.setText(name);
 
-    }
-
-    private void getMap(ArrayList<String> ingredients, ArrayList<String> measurements) {
-        ingredientMesurementMap.clear();
-        for (int i = 0; i < ingredients.size(); i++) {
-            ingredientMesurementMap.put(ingredients.get(i), measurements.get(i));
-        }
+        ingredientsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemClick: " + ingredients.get(position));
+                Intent intent = new Intent(getApplication(), IngredientDescription.class);
+                intent.putExtra("ingredientName", ingredients.get(position));
+                startActivity(intent);
+            }
+        });
     }
 
     public void onClickShare(View view) {

@@ -105,7 +105,7 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
                 initSearch(view);
                 break;
             case 2:
-                initMyRecipe(view);
+//                initMyRecipe(view);
                 break;
         }
         return view;
@@ -114,8 +114,9 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     private void initPopular(View view) {
         editQuery.setVisibility(View.GONE);
         tabTitle.setText(R.string.tab1Title);
-        List<Recipe> randomRecipes = new ArrayList<>();
-        fetchRandomRecipes(0, randomRecipes);
+        List<Recipe> randomRecipes1 = new ArrayList<>();
+        List<Recipe> randomRecipes2 = new ArrayList<>();
+        fetchRandomRecipes(0, randomRecipes1, randomRecipes2);
 
 //        for (int i = 0; i < 10; i++) {
 //            data.addAll(fetchRandomRecipes());
@@ -216,7 +217,7 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     }
 
 
-    private void fetchRandomRecipes(int nRandom, List<Recipe> randomRecipes) {
+    private void fetchRandomRecipes(int nRandom, List<Recipe> randomRecipes1, List<Recipe> randomRecipes2) {
         Log.i("random fetched:", "111111111");
         if (retrofit == null) {
             Log.i("fetched:", "retrofit = null");
@@ -233,14 +234,18 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
             public void onResponse(Call<RecipeResponse> call, Response<RecipeResponse> response) {
                 Log.i("random_responded:", response.body().toString());
                 RecipeResponse recipeResponse = response.body();
-                randomRecipes.addAll(recipeResponse.getRecipes());
                 if (nRandom < 10) {
-                    fetchRandomRecipes(nRandom + 1, randomRecipes);
+                    randomRecipes1.addAll(recipeResponse.getRecipes());
+                } else if (nRandom >= 10 && nRandom < 20) {
+                    randomRecipes2.addAll(recipeResponse.getRecipes());
+                }
+                if (nRandom < 20) {
+                    fetchRandomRecipes(nRandom + 1, randomRecipes1, randomRecipes2);
                 }else {
-                    data = randomRecipes;
+                    data = randomRecipes1;
                     adapter = new RecipesRecyclerAdapter(data, RecipeListFragment.this);
                     recyclerView.setAdapter(adapter);
-                    horizontalAdapter = new HorizontalAdapter(data, RecipeListFragment.this);
+                    horizontalAdapter = new HorizontalAdapter(randomRecipes2, RecipeListFragment.this);
                     horizontalScrollView.setAdapter(horizontalAdapter);
 
 //                    db.insertRecipes(randomRecipes);
@@ -304,7 +309,8 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
 //    public ArrayList<String> getIngredients(int position) {
 //        ArrayList<String> ingredients = new ArrayList<>();
 //        String currentIngredient = data.get(position).getIngredient1()
-//    }
+//    }Amaretto Liqueur
+
 }
 
 
