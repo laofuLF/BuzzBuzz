@@ -93,14 +93,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         // prepare the Recipe object
-        Recipe output = new Recipe(
-                cursor.getInt(cursor.getColumnIndex(Recipe.COLUMN_ID)),
-                cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_RECIPE_NAME)),
-                cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_GLASS)),
-                cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_IMAGE)),
-                cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_INSTRUCTIONS)),
-                cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_CATEGORY))
-        );
+        Recipe output = new Recipe();
+        output.setId(cursor.getInt(cursor.getColumnIndex(Recipe.COLUMN_ID)));
+        output.setRecipeName(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_RECIPE_NAME)));
+        output.setGlass(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_GLASS)));
+        output.setImage(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_IMAGE)));
+        output.setInstructions(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_INSTRUCTIONS)));
+        output.setCategory(cursor.getString(cursor.getColumnIndex(Recipe.COLUMN_CATEGORY)));
 
         cursor.close();
         return output;

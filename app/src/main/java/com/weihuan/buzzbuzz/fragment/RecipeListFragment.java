@@ -38,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
+import retrofit2.http.POST;
 
 
 public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapter.OnRecipeListener {
@@ -205,7 +205,6 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
                     adapter = new RecipesRecyclerAdapter(data, RecipeListFragment.this);
                     recyclerView.setAdapter(adapter);
                     Toast.makeText(getActivity(), "No Result Found", Toast.LENGTH_LONG).show();
-
                 }
             }
 
@@ -297,8 +296,15 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
         intent.putExtra("name", currenRecipe.getRecipeName());
         intent.putExtra("image", currenRecipe.getImage());
         intent.putExtra("glass", currenRecipe.getGlass());
+        intent.putExtra("ingredients", currenRecipe.getAllIngredients());
+        intent.putExtra("measurements", currenRecipe.getAllMeasurements());
         startActivity(intent);
     }
+
+//    public ArrayList<String> getIngredients(int position) {
+//        ArrayList<String> ingredients = new ArrayList<>();
+//        String currentIngredient = data.get(position).getIngredient1()
+//    }
 }
 
 
