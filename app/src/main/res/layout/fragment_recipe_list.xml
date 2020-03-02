@@ -1,56 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<FrameLayout android:id="@+id/fragment_container"
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
+    <FrameLayout android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/tab1"
-            android:textStyle="bold"
-            android:id="@+id/tabTitle"
-            android:textSize="25dp"
-            android:padding="10dp"
-            android:text="Tab"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/horizontal_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/search_badge"
-            android:layout_margin="8dp">
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/tab1"
+                android:textStyle="bold"
+                android:id="@+id/tabTitle"
+                android:textSize="25dp"
+                android:padding="10dp"
+                android:text="Tab"/>
 
-            <EditText
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/horizontal_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/edit_query"
-                android:layout_weight="1"
-                android:maxLines="1"
-                android:lines="1"
-                android:inputType="text|textNoSuggestions"
-                android:paddingLeft="5dp"
-                android:hint="search cocktails or ingredients"/>
+                android:id="@+id/search_badge"
+                android:layout_margin="8dp">
 
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edit_query"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:inputType="text|textNoSuggestions"
+                    android:paddingLeft="5dp"
+                    android:hint="search cocktails or ingredients"/>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-</FrameLayout>
+    </FrameLayout>
+</ScrollView>

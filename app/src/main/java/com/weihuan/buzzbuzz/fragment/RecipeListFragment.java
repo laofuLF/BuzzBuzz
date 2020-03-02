@@ -11,8 +11,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +36,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.POST;
 
 
 public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapter.OnRecipeListener {
@@ -55,7 +52,8 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     private EditText editQuery;
     private TextView tabTitle;
     private Retrofit retrofit = null;
-    private List<Recipe> data;
+    private List<Recipe> verticalRecipes;
+    private List<Recipe> horizontalRecipes;
     private HorizontalAdapter horizontalAdapter;
     private LinearLayoutManager horizontalLayout;
 
@@ -146,36 +144,19 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     private void initMyRecipe(View view) {
         tabTitle.setText(R.string.tab3Title);
         editQuery.setVisibility(View.GONE);
-        // test db data
-        List<Recipe> RecipeDatabase = new ArrayList<>();
+        refreshDatabase();
+    }
 
-//        db.resetTable();
+    public void refreshDatabase() {
+        List<Recipe> RecipeDatabase = new ArrayList<>();
         RecipeDatabase.addAll(db.getAllRecipes());
         for (Recipe recipeDB: RecipeDatabase) {
             int id = recipeDB.getId();
             Log.i("Database data:", String.valueOf(id));
         }
-        data = RecipeDatabase;
-        adapter = new RecipesRecyclerAdapter(data, this);
+        verticalRecipes = RecipeDatabase;
+        adapter = new RecipesRecyclerAdapter(verticalRecipes, this);
         recyclerView.setAdapter(adapter);
-
-
-
-//        for (int i = 0; i < 50; i++) {
-//            cocktailNames.add("Fragment " + getArguments().getInt("index", -1) + " / Item " + i);
-//        }
-
-//        String url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita";
-
-//        List<Recipe> RecipeDatabase = new ArrayList<>();
-//        RecipeDatabase.addAll(db.getAllRecipes());
-//        for (Recipe recipeDB: RecipeDatabase) {
-//            String name = recipeDB.getRecipeName();
-//            Log.i("Database data:", String.valueOf(name));
-//            cocktailNames.add(name);
-//        }
-
-
     }
 
     private void fetchRecipes(String query) {
@@ -195,15 +176,15 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
             public void onResponse(Call<RecipeResponse> call, Response<RecipeResponse> response) {
                 Log.i("responded:", response.body().toString());
                 RecipeResponse recipeResponse = response.body();
-                data = recipeResponse.getRecipes();
+                verticalRecipes = recipeResponse.getRecipes();
 //                for (Recipe recipe: data) {
 //                    db.insertRecipe(recipe);
 //                }
-                if (data != null) {
-                    adapter = new RecipesRecyclerAdapter(data, RecipeListFragment.this);
+                if (verticalRecipes != null) {
+                    adapter = new RecipesRecyclerAdapter(verticalRecipes, RecipeListFragment.this);
                     recyclerView.setAdapter(adapter);
                 }else {
-                    adapter = new RecipesRecyclerAdapter(data, RecipeListFragment.this);
+                    adapter = new RecipesRecyclerAdapter(verticalRecipes, RecipeListFragment.this);
                     recyclerView.setAdapter(adapter);
                     Toast.makeText(getActivity(), "No Result Found", Toast.LENGTH_LONG).show();
                 }
@@ -242,10 +223,11 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
                 if (nRandom < 20) {
                     fetchRandomRecipes(nRandom + 1, randomRecipes1, randomRecipes2);
                 }else {
-                    data = randomRecipes1;
-                    adapter = new RecipesRecyclerAdapter(data, RecipeListFragment.this);
+                    verticalRecipes = randomRecipes1;
+                    adapter = new RecipesRecyclerAdapter(verticalRecipes, RecipeListFragment.this);
                     recyclerView.setAdapter(adapter);
-                    horizontalAdapter = new HorizontalAdapter(randomRecipes2, RecipeListFragment.this);
+                    horizontalRecipes = randomRecipes2;
+                    horizontalAdapter = new HorizontalAdapter(horizontalRecipes, RecipeListFragment.this);
                     horizontalScrollView.setAdapter(horizontalAdapter);
 
 //                    db.insertRecipes(randomRecipes);
@@ -294,23 +276,34 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     @Override
     public void onRecipeClick(int position) {
         Log.d(TAG, "onRecipeClick: " + position);
-        Log.d(TAG, "onRecipeClick: " + data.get(position).getInstructions());
-        Recipe currenRecipe = data.get(position);
+        Log.d(TAG, "onRecipeClick: " + verticalRecipes.get(position).getInstructions());
+        Recipe currentRecipe = verticalRecipes.get(position);
         Intent intent = new Intent(getActivity(), RecipeDetails.class);
-        intent.putExtra("instructions", currenRecipe.getInstructions());
-        intent.putExtra("name", currenRecipe.getRecipeName());
-        intent.putExtra("image", currenRecipe.getImage());
-        intent.putExtra("glass", currenRecipe.getGlass());
-        intent.putExtra("ingredients", currenRecipe.getAllIngredients());
-        intent.putExtra("measurements", currenRecipe.getAllMeasurements());
+        intent.putExtra("MyRecipe", currentRecipe);
         startActivity(intent);
+
+//        startActivity(currentRecipe);
     }
 
-//    public ArrayList<String> getIngredients(int position) {
-//        ArrayList<String> ingredients = new ArrayList<>();
-//        String currentIngredient = data.get(position).getIngredient1()
-//    }Amaretto Liqueur
-
+    @Override
+    public void onHorizontalRecipeClick(int position) {
+        Log.d(TAG, "onHorizontalRecipeClick: ");
+        Recipe currentRecipe = horizontalRecipes.get(position);
+        Intent intent = new Intent(getActivity(), RecipeDetails.class);
+        intent.putExtra("MyRecipe", currentRecipe);
+        startActivity(intent);
+    }
+    
+//    private void startActivity(Recipe currentRecipe) {
+//        Intent intent = new Intent(getActivity(), RecipeDetails.class);
+//        intent.putExtra("instructions", currentRecipe.getInstructions());
+//        intent.putExtra("name", currentRecipe.getRecipeName());
+//        intent.putExtra("image", currentRecipe.getImage());
+//        intent.putExtra("glass", currentRecipe.getGlass());
+//        intent.putExtra("ingredients", currentRecipe.getAllIngredients());
+//        intent.putExtra("measurements", currentRecipe.getAllMeasurements());
+//        startActivity(intent);
+//    }
 }
 
 

@@ -135,7 +135,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Recipe.MEASUREMENT14, measurement14);
         values.put(Recipe.MEASUREMENT15, measurement15);
 
-
         db.insert(Recipe.TABLE_NAME, null, values);
         db.close();
     }
@@ -165,6 +164,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        cursor.close();
 //        return output;
 //    }
+
+    public boolean checkExist(int id) {
+        Boolean exist = false;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(Recipe.TABLE_NAME,
+                new String[]{Recipe.COLUMN_ID},
+                Recipe.COLUMN_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null,null,null);
+
+        int count = cursor.getCount();
+        if (count == 0) {
+            exist = false;
+        } else {
+            exist = true;
+        }
+
+        cursor.close();
+        return exist;
+    }
 
 
     public List<Recipe> getAllRecipes() {
@@ -205,20 +224,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 current.setIngredient15(cursor.getString(cursor.getColumnIndex(Recipe.INGREDIENT15)));
 
                 current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement2(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
-                current.setMeasurement1(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT1)));
+                current.setMeasurement2(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT2)));
+                current.setMeasurement3(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT3)));
+                current.setMeasurement4(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT4)));
+                current.setMeasurement5(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT5)));
+                current.setMeasurement6(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT6)));
+                current.setMeasurement7(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT7)));
+                current.setMeasurement8(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT8)));
+                current.setMeasurement9(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT9)));
+                current.setMeasurement10(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT10)));
+                current.setMeasurement11(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT11)));
+                current.setMeasurement12(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT12)));
+                current.setMeasurement13(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT13)));
+                current.setMeasurement14(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT14)));
+                current.setMeasurement15(cursor.getString(cursor.getColumnIndex(Recipe.MEASUREMENT15)));
 
                 recipes.add(current);
             } while (cursor.moveToNext());
@@ -246,7 +265,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(Recipe.TABLE_NAME, Recipe.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(recipeData.getId())});
-
         db.close();
     }
 

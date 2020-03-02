@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         db = new DatabaseHelper(this);
-        db.resetTable();
+//        db.resetTable();
 //        recipeList.addAll(db.getAllRecipes());
 
         String url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita";
@@ -110,6 +110,9 @@ public class MainActivity extends AppCompatActivity {
 
                 if (wasSelected) {
                     currentFragment.refresh();
+                    if (position == 2) {
+                        currentFragment.refreshDatabase();
+                    }
                     return true;
                 }
 
@@ -118,6 +121,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 viewPager.setCurrentItem(position, false);
+//                if (position == 2) {
+//                    RecipeListFragment recipeListFragment = new RecipeListFragment();
+//                    recipeListFragment.refreshDatabase();
+//                }
                 if (currentFragment == null) {
                     return true;
                 }

@@ -123,88 +123,6 @@ public class Recipe implements Parcelable {
     @SerializedName("strMeasure15")
     private String measurement15;
 
-    public String getIngredient11() {
-        return ingredient11;
-    }
-
-    public void setIngredient11(String ingredient11) {
-        this.ingredient11 = ingredient11;
-    }
-
-    public String getIngredient12() {
-        return ingredient12;
-    }
-
-    public void setIngredient12(String ingredient12) {
-        this.ingredient12 = ingredient12;
-    }
-
-    public String getIngredient13() {
-        return ingredient13;
-    }
-
-    public void setIngredient13(String ingredient13) {
-        this.ingredient13 = ingredient13;
-    }
-
-    public String getIngredient14() {
-        return ingredient14;
-    }
-
-    public void setIngredient14(String ingredient14) {
-        this.ingredient14 = ingredient14;
-    }
-
-    public String getIngredient15() {
-        return ingredient15;
-    }
-
-    public void setIngredient15(String ingredient15) {
-        this.ingredient15 = ingredient15;
-    }
-
-
-
-    public String getMeasurement11() {
-        return measurement11;
-    }
-
-    public void setMeasurement11(String measurement11) {
-        this.measurement11 = measurement11;
-    }
-
-    public String getMeasurement12() {
-        return measurement12;
-    }
-
-    public void setMeasurement12(String measurement12) {
-        this.measurement12 = measurement12;
-    }
-
-    public String getMeasurement13() {
-        return measurement13;
-    }
-
-    public void setMeasurement13(String measurement13) {
-        this.measurement13 = measurement13;
-    }
-
-    public String getMeasurement14() {
-        return measurement14;
-    }
-
-    public void setMeasurement14(String measurement14) {
-        this.measurement14 = measurement14;
-    }
-
-    public String getMeasurement15() {
-        return measurement15;
-    }
-
-    public void setMeasurement15(String measurement15) {
-        this.measurement15 = measurement15;
-    }
-
 
     // Create table SQL query
     public static final String CREATE_TABLE =
@@ -273,6 +191,38 @@ public class Recipe implements Parcelable {
         this.image = in.readString();
         this.instructions = in.readString();
         this.category = in.readString();
+        this.ingredient1 = in.readString();
+        this.ingredient2 = in.readString();
+        this.ingredient3 = in.readString();
+        this.ingredient4 = in.readString();
+        this.ingredient5 = in.readString();
+        this.ingredient6 = in.readString();
+        this.ingredient7 = in.readString();
+        this.ingredient8 = in.readString();
+        this.ingredient9 = in.readString();
+        this.ingredient10 = in.readString();
+        this.ingredient11 = in.readString();
+        this.ingredient12 = in.readString();
+        this.ingredient13 = in.readString();
+        this.ingredient14 = in.readString();
+        this.ingredient15 = in.readString();
+        this.measurement1 = in.readString();
+        this.measurement2 = in.readString();
+        this.measurement3 = in.readString();
+        this.measurement4 = in.readString();
+        this.measurement5 = in.readString();
+        this.measurement6 = in.readString();
+        this.measurement7 = in.readString();
+        this.measurement8 = in.readString();
+        this.measurement9 = in.readString();
+        this.measurement10 = in.readString();
+        this.measurement11 = in.readString();
+        this.measurement12 = in.readString();
+        this.measurement13 = in.readString();
+        this.measurement14 = in.readString();
+        this.measurement15 = in.readString();
+
+
     }
 
     public ArrayList<String> getAllIngredients(){
@@ -380,13 +330,6 @@ public class Recipe implements Parcelable {
         return 0;
     }
 
-    /**
-     * Actual object serialization happens here, write object content to parcel
-     * one by one, reading should be done according to its order.
-     * flat means how the object should be written
-     * @param dest
-     * @param flags
-     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
@@ -395,6 +338,36 @@ public class Recipe implements Parcelable {
         dest.writeString(image);
         dest.writeString(instructions);
         dest.writeString(category);
+        dest.writeString(ingredient1);
+        dest.writeString(ingredient2);
+        dest.writeString(ingredient3);
+        dest.writeString(ingredient4);
+        dest.writeString(ingredient5);
+        dest.writeString(ingredient6);
+        dest.writeString(ingredient7);
+        dest.writeString(ingredient8);
+        dest.writeString(ingredient9);
+        dest.writeString(ingredient10);
+        dest.writeString(ingredient11);
+        dest.writeString(ingredient12);
+        dest.writeString(ingredient13);
+        dest.writeString(ingredient14);
+        dest.writeString(ingredient15);
+        dest.writeString(measurement1);
+        dest.writeString(measurement2);
+        dest.writeString(measurement3);
+        dest.writeString(measurement4);
+        dest.writeString(measurement5);
+        dest.writeString(measurement6);
+        dest.writeString(measurement7);
+        dest.writeString(measurement8);
+        dest.writeString(measurement9);
+        dest.writeString(measurement10);
+        dest.writeString(measurement11);
+        dest.writeString(measurement12);
+        dest.writeString(measurement13);
+        dest.writeString(measurement14);
+        dest.writeString(measurement15);
     }
 
     /**
@@ -559,6 +532,46 @@ public class Recipe implements Parcelable {
         this.ingredient10 = ingredient10;
     }
 
+    public String getIngredient11() {
+        return ingredient11;
+    }
+
+    public void setIngredient11(String ingredient11) {
+        this.ingredient11 = ingredient11;
+    }
+
+    public String getIngredient12() {
+        return ingredient12;
+    }
+
+    public void setIngredient12(String ingredient12) {
+        this.ingredient12 = ingredient12;
+    }
+
+    public String getIngredient13() {
+        return ingredient13;
+    }
+
+    public void setIngredient13(String ingredient13) {
+        this.ingredient13 = ingredient13;
+    }
+
+    public String getIngredient14() {
+        return ingredient14;
+    }
+
+    public void setIngredient14(String ingredient14) {
+        this.ingredient14 = ingredient14;
+    }
+
+    public String getIngredient15() {
+        return ingredient15;
+    }
+
+    public void setIngredient15(String ingredient15) {
+        this.ingredient15 = ingredient15;
+    }
+
     public String getMeasurement1() {
         return measurement1;
     }
@@ -638,4 +651,46 @@ public class Recipe implements Parcelable {
     public void setMeasurement10(String measurement10) {
         this.measurement10 = measurement10;
     }
+
+
+    public String getMeasurement11() {
+        return measurement11;
+    }
+
+    public void setMeasurement11(String measurement11) {
+        this.measurement11 = measurement11;
+    }
+
+    public String getMeasurement12() {
+        return measurement12;
+    }
+
+    public void setMeasurement12(String measurement12) {
+        this.measurement12 = measurement12;
+    }
+
+    public String getMeasurement13() {
+        return measurement13;
+    }
+
+    public void setMeasurement13(String measurement13) {
+        this.measurement13 = measurement13;
+    }
+
+    public String getMeasurement14() {
+        return measurement14;
+    }
+
+    public void setMeasurement14(String measurement14) {
+        this.measurement14 = measurement14;
+    }
+
+    public String getMeasurement15() {
+        return measurement15;
+    }
+
+    public void setMeasurement15(String measurement15) {
+        this.measurement15 = measurement15;
+    }
+
 }

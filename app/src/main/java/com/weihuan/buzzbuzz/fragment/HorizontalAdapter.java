@@ -34,7 +34,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Vi
 
         @Override
         public void onClick(View v) {
-            onRecipeListener.onRecipeClick(getAdapterPosition());
+            onRecipeListener.onHorizontalRecipeClick(getAdapterPosition());
         }
     }
 

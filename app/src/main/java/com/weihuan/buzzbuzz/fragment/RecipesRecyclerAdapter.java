@@ -98,10 +98,11 @@ public class RecipesRecyclerAdapter extends RecyclerView.Adapter<RecipesRecycler
 
     public interface OnRecipeListener {
         void onRecipeClick(int position);
+        void onHorizontalRecipeClick(int position);
     }
 
-    public interface OnHorizontalRecipeListener {
-        void onRecipeClick(int position);
-    }
+//    public interface OnHorizontalRecipeListener {
+//        void onHorizontalRecipeClick(int position);
+//    }
 
 }
