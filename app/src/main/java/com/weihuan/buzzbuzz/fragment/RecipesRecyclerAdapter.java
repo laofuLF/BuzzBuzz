@@ -100,4 +100,8 @@ public class RecipesRecyclerAdapter extends RecyclerView.Adapter<RecipesRecycler
         void onRecipeClick(int position);
     }
 
+    public interface OnHorizontalRecipeListener {
+        void onRecipeClick(int position);
+    }
+
 }

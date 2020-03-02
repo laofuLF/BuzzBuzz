@@ -17,6 +17,38 @@ public class Recipe implements Parcelable {
     public static final String COLUMN_IMAGE = "image";
     public static final String COLUMN_INSTRUCTIONS = "instructions";
     public static final String COLUMN_CATEGORY = "category";
+    public static final String INGREDIENT1 = "ingredient1";
+    public static final String INGREDIENT2 = "ingredient2";
+    public static final String INGREDIENT3 = "ingredient3";
+    public static final String INGREDIENT4 = "ingredient4";
+    public static final String INGREDIENT5 = "ingredient5";
+    public static final String INGREDIENT6 = "ingredient6";
+    public static final String INGREDIENT7 = "ingredient7";
+    public static final String INGREDIENT8 = "ingredient8";
+    public static final String INGREDIENT9 = "ingredient9";
+    public static final String INGREDIENT10 = "ingredient10";
+    public static final String INGREDIENT11 = "ingredient11";
+    public static final String INGREDIENT12 = "ingredient12";
+    public static final String INGREDIENT13 = "ingredient13";
+    public static final String INGREDIENT14 = "ingredient14";
+    public static final String INGREDIENT15 = "ingredient15";
+    public static final String MEASUREMENT1 = "measurement1";
+    public static final String MEASUREMENT2 = "measurement2";
+    public static final String MEASUREMENT3 = "measurement3";
+    public static final String MEASUREMENT4 = "measurement4";
+    public static final String MEASUREMENT5 = "measurement5";
+    public static final String MEASUREMENT6 = "measurement6";
+    public static final String MEASUREMENT7 = "measurement7";
+    public static final String MEASUREMENT8 = "measurement8";
+    public static final String MEASUREMENT9 = "measurement9";
+    public static final String MEASUREMENT10 = "measurement10";
+    public static final String MEASUREMENT11 = "measurement11";
+    public static final String MEASUREMENT12 = "measurement12";
+    public static final String MEASUREMENT13 = "measurement13";
+    public static final String MEASUREMENT14 = "measurement14";
+    public static final String MEASUREMENT15 = "measurement15";
+
+
 
     @SerializedName("idDrink")
     private int id;
@@ -182,7 +214,40 @@ public class Recipe implements Parcelable {
                     + COLUMN_GLASS + " TEXT, "
                     + COLUMN_IMAGE + " TEXT, "
                     + COLUMN_INSTRUCTIONS + " TEXT, "
-                    + COLUMN_CATEGORY + " TEXT)";
+                    + COLUMN_CATEGORY + " TEXT, "
+                    + INGREDIENT1 + " TEXT, "
+                    + INGREDIENT2 + " TEXT, "
+                    + INGREDIENT3 + " TEXT, "
+                    + INGREDIENT4 + " TEXT, "
+                    + INGREDIENT5 + " TEXT, "
+                    + INGREDIENT6 + " TEXT, "
+                    + INGREDIENT7 + " TEXT, "
+                    + INGREDIENT8 + " TEXT, "
+                    + INGREDIENT9 + " TEXT, "
+                    + INGREDIENT10 + " TEXT, "
+                    + INGREDIENT11 + " TEXT, "
+                    + INGREDIENT12 + " TEXT, "
+                    + INGREDIENT13 + " TEXT, "
+                    + INGREDIENT14 + " TEXT, "
+                    + INGREDIENT15 + " TEXT, "
+                    + MEASUREMENT1 + " TEXT, "
+                    + MEASUREMENT2 + " TEXT, "
+                    + MEASUREMENT3 + " TEXT, "
+                    + MEASUREMENT4 + " TEXT, "
+                    + MEASUREMENT5 + " TEXT, "
+                    + MEASUREMENT6 + " TEXT, "
+                    + MEASUREMENT7 + " TEXT, "
+                    + MEASUREMENT8 + " TEXT, "
+                    + MEASUREMENT9 + " TEXT, "
+                    + MEASUREMENT10 + " TEXT, "
+                    + MEASUREMENT11 + " TEXT, "
+                    + MEASUREMENT12 + " TEXT, "
+                    + MEASUREMENT13 + " TEXT, "
+                    + MEASUREMENT14 + " TEXT, "
+                    + MEASUREMENT15 + " TEXT)";
+
+
+
 
     public static final String DELETE_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -573,11 +638,4 @@ public class Recipe implements Parcelable {
     public void setMeasurement10(String measurement10) {
         this.measurement10 = measurement10;
     }
-
-
-
-
-
-
-
 }

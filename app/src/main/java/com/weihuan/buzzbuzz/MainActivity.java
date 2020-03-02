@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         db = new DatabaseHelper(this);
-//        db.resetTable();
+        db.resetTable();
 //        recipeList.addAll(db.getAllRecipes());
 
         String url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita";

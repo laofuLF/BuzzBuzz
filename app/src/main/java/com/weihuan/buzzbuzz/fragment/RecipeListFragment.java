@@ -105,7 +105,7 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
                 initSearch(view);
                 break;
             case 2:
-//                initMyRecipe(view);
+                initMyRecipe(view);
                 break;
         }
         return view;
