@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -43,22 +44,20 @@ public class RecipeDetails extends AppCompatActivity {
         initView();
     }
 
-//    private void getMap(ArrayList<String> ingredients, ArrayList<String> measurements) {
-//        ingredientMesurementMap.clear();
-//        for (int i = 0; i < ingredients.size(); i++) {
-//            ingredientMesurementMap.put(ingredients.get(i), measurements.get(i));
-//        }
-//    }
-
     private void initView() {
 //        getIntentData();
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra("MyRecipe");
 
+        DatabaseHelper db = new DatabaseHelper(this);
         TextView layoutTitle = findViewById(R.id.detailRecipeTitle);
         TextView instructions = findViewById(R.id.detailRecipeInstruction);
         ImageView detailImage = findViewById(R.id.detailsImage);
         ListView ingredientsListView = findViewById(R.id.ingredientsListView);
+        Button deleteButton = findViewById(R.id.delete_button);
+        if (!db.checkExist(recipe.getId())) {
+            deleteButton.setVisibility(View.GONE);
+        }
 
         ingredients = recipe.getAllIngredients();
         measurements = recipe.getAllMeasurements();
@@ -67,7 +66,7 @@ public class RecipeDetails extends AppCompatActivity {
         name = recipe.getRecipeName();
 
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ingredientsListView.getLayoutParams();
-        params.height = 150 * ingredients.size();
+        params.height = 200 * ingredients.size();
         ingredientsListView.setLayoutParams(params);
 //        getMap(ingredients, measurements);
         IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(ingredients, measurements);
@@ -90,22 +89,6 @@ public class RecipeDetails extends AppCompatActivity {
         });
     }
 
-    private void getIntentData() {
-        Intent intent = getIntent();
-        instruction = intent.getStringExtra("instructions");
-        recipe.setInstructions(instruction);
-        name = intent.getStringExtra("name");
-        recipe.setRecipeName(name);
-        image = intent.getStringExtra("image");
-        recipe.setImage(image);
-        glass = intent.getStringExtra("glass");
-        recipe.setGlass(glass);
-        ingredients = intent.getStringArrayListExtra("ingredients");
-
-        recipe.setIngredient1(ingredients.get(0));
-        measurements = intent.getStringArrayListExtra("measurements");
-    }
-
     public void onClickShare(View view) {
         final String result = "Here is how to make a " + name + " \n" + instruction;
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -124,6 +107,13 @@ public class RecipeDetails extends AppCompatActivity {
             db.insertRecipe(recipe);
             Toast.makeText(this, "Successfully Saved", Toast.LENGTH_SHORT).show();
         }
+    }
 
+    public void onClickDelete(View view) {
+        DatabaseHelper db = new DatabaseHelper(this);
+        if (db.checkExist(recipe.getId())) {
+            db.deleteRecipe(recipe);
+            Toast.makeText(this, "Recipe Deleted", Toast.LENGTH_SHORT).show();
+        }
     }
 }

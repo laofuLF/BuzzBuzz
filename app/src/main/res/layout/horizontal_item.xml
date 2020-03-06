@@ -4,14 +4,27 @@
     android:layout_height="wrap_content"
     >
 
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:scaleType="fitXY"
-        android:id="@+id/horizontal_image"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="fitXY"
+            android:id="@+id/horizontal_image"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            />
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:src="@drawable/frame"/>
+
+    </FrameLayout>
+
 
     <TextView
         android:layout_width="match_parent"
@@ -19,7 +32,7 @@
         android:text="Recipe1"
         android:id="@+id/horizontal_title"
         android:layout_margin="5dp"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:gravity="center"/>
 
 </LinearLayout>

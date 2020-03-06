@@ -56,6 +56,8 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     private List<Recipe> horizontalRecipes;
     private HorizontalAdapter horizontalAdapter;
     private LinearLayoutManager horizontalLayout;
+    private TextView iconic;
+    private View viewId;
 
     RecipesRecyclerAdapter adapter;
 
@@ -85,9 +87,10 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-//        horizontalScrollView.setLayoutManager(layoutManager);
         horizontalLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         horizontalScrollView.setLayoutManager(horizontalLayout);
+        iconic = view.findViewById(R.id.iconic);
+        viewId = view.findViewById(R.id.view);
 
         tabTitle = view.findViewById(R.id.tabTitle);
 
@@ -115,7 +118,7 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
         List<Recipe> randomRecipes1 = new ArrayList<>();
         List<Recipe> randomRecipes2 = new ArrayList<>();
         fetchRandomRecipes(0, randomRecipes1, randomRecipes2);
-
+        iconic.setText("Iconic Cocktails");
 //        for (int i = 0; i < 10; i++) {
 //            data.addAll(fetchRandomRecipes());
 //        }
@@ -125,6 +128,8 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     private void initSearch(View view) {
         Log.i("initSearch:", "1111111111111");
         editQuery.setVisibility(View.VISIBLE);
+        iconic.setVisibility(View.GONE);
+        viewId.setVisibility(View.GONE);
         editQuery.setImeActionLabel("SEARCH", KeyEvent.KEYCODE_ENTER);
         editQuery.setOnKeyListener((v, keyCode, event) -> {
             if ((event.getAction() == KeyEvent.ACTION_DOWN)
@@ -144,9 +149,13 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     private void initMyRecipe(View view) {
         tabTitle.setText(R.string.tab3Title);
         editQuery.setVisibility(View.GONE);
+        iconic.setVisibility(View.GONE);
         refreshDatabase();
     }
 
+    /**
+     * Display updated recipes from db
+     */
     public void refreshDatabase() {
         List<Recipe> RecipeDatabase = new ArrayList<>();
         RecipeDatabase.addAll(db.getAllRecipes());
@@ -292,6 +301,10 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
         Intent intent = new Intent(getActivity(), RecipeDetails.class);
         intent.putExtra("MyRecipe", currentRecipe);
         startActivity(intent);
+    }
+
+    public void sendBroadcast(View view) {
+
     }
     
 //    private void startActivity(Recipe currentRecipe) {

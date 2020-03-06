@@ -44,9 +44,30 @@
                     android:lines="1"
                     android:inputType="text|textNoSuggestions"
                     android:paddingLeft="5dp"
-                    android:hint="search cocktails or ingredients"/>
+                    android:hint="search cocktails"/>
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/iconic"
+                android:textSize="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_below="@id/instructionTitle"
+                android:layout_marginBottom="10dp"
+                android:background="@color/tab3"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fragment_recycler_view"

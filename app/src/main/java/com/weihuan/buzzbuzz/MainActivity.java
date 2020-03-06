@@ -2,9 +2,11 @@ package com.weihuan.buzzbuzz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import com.weihuan.buzzbuzz.fragment.ViewPagerAdapter;
 import com.weihuan.buzzbuzz.db.DatabaseHelper;
 import com.weihuan.buzzbuzz.db.Recipe;
 import com.weihuan.buzzbuzz.network.HttpRequest;
+import com.weihuan.buzzbuzz.service.MusicService;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -143,6 +146,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void startService(View view) {
+        startService(new Intent(this, MusicService.class));
+    }
 
-
+    public void stopService(View view) {
+        stopService(new Intent(this, MusicService.class));
+    }
 }
