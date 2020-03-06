@@ -2,62 +2,38 @@ package com.weihuan.buzzbuzz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.weihuan.buzzbuzz.fragment.RecipeListFragment;
 import com.weihuan.buzzbuzz.fragment.ViewPagerAdapter;
-import com.weihuan.buzzbuzz.db.DatabaseHelper;
-import com.weihuan.buzzbuzz.db.Recipe;
-import com.weihuan.buzzbuzz.network.HttpRequest;
 import com.weihuan.buzzbuzz.service.MusicService;
 
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
-
 public class MainActivity extends AppCompatActivity {
+    public static final int NOTIFICATION_ID = 5453;
 
-    private AHBottomNavigationAdapter navigationAdapter;
-    private ArrayList<AHBottomNavigationItem> bottomNavigationItems = new ArrayList<>();
-    private int[] tabColors;
     private RecipeListFragment currentFragment;
     private ViewPagerAdapter adapter;
-    private Handler handler = new Handler();
-
-
+    private Boolean musicPlaying;
+    private IntentFilter intentFilter;
+    BroadcastReceiver broadcastReceiver;
 
     // UI
     private AHBottomNavigationViewPager viewPager;
     private AHBottomNavigation bottomNavigation;
-    private TextView textView;
 
-    // Database
-    private DatabaseHelper db;
-    private ArrayList<Recipe> recipeList = new ArrayList<>();
-    private HttpRequest httpRequest;
-
-//    public String url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita";
 
 
     @Override
@@ -65,24 +41,60 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        musicPlaying = false;
         initBottomBar();
-
-
-        db = new DatabaseHelper(this);
-//        db.resetTable();
-//        recipeList.addAll(db.getAllRecipes());
-
-        String url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita";
-//        run(url);
-
-//        httpRequest = new HttpRequest(url);
-//        httpRequest.run(url);
-//        httpRequest.getRecipes();
+        broadcastIntent();
     }
 
+    private void broadcastIntent() {
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (Intent.ACTION_BATTERY_LOW.equals(intent.ACTION_BATTERY_LOW)) {
+                    if (musicPlaying) {
+                        stopService(new Intent(context, MusicService.class));
+                        musicPlaying = false;
+//                        Toast.makeText(context, "Battery low! music stopped playing",
+//                                Toast.LENGTH_LONG).show();
+                        sendNotification();
+                    }
+
+                }
+            }
+        };
+        intentFilter = new IntentFilter(Intent.ACTION_BATTERY_LOW);
+    }
+
+    protected void sendNotification() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setSmallIcon(android.R.drawable.sym_def_app_icon)
+                .setContentTitle(getString(R.string.title))
+                .setContentText(getString(R.string.notification))
+                .setVibrate(new long[] {0, 1000})
+                .setAutoCancel(true);
 
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel notificationChannel = new NotificationChannel("AppTestNotificationId", "AppTestNotificationName", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(notificationChannel);
+            builder.setChannelId("AppTestNotificationId");
+        }
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
+    }
 
     private void initBottomBar() {
 
@@ -124,10 +136,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 viewPager.setCurrentItem(position, false);
-//                if (position == 2) {
-//                    RecipeListFragment recipeListFragment = new RecipeListFragment();
-//                    recipeListFragment.refreshDatabase();
-//                }
                 if (currentFragment == null) {
                     return true;
                 }
@@ -138,19 +146,23 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
         viewPager.setOffscreenPageLimit(4);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         currentFragment = adapter.getCurrentFragment();
-
     }
 
     public void startService(View view) {
-        startService(new Intent(this, MusicService.class));
+        if (!musicPlaying) {
+            startService(new Intent(this, MusicService.class));
+            musicPlaying = true;
+        }
     }
 
     public void stopService(View view) {
-        stopService(new Intent(this, MusicService.class));
+        if (musicPlaying) {
+            stopService(new Intent(this, MusicService.class));
+            musicPlaying = false;
+        }
     }
 }

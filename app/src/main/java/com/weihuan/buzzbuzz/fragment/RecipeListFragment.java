@@ -119,14 +119,9 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
         List<Recipe> randomRecipes2 = new ArrayList<>();
         fetchRandomRecipes(0, randomRecipes1, randomRecipes2);
         iconic.setText("Iconic Cocktails");
-//        for (int i = 0; i < 10; i++) {
-//            data.addAll(fetchRandomRecipes());
-//        }
-
     }
 
     private void initSearch(View view) {
-        Log.i("initSearch:", "1111111111111");
         editQuery.setVisibility(View.VISIBLE);
         iconic.setVisibility(View.GONE);
         viewId.setVisibility(View.GONE);
@@ -161,7 +156,6 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
         RecipeDatabase.addAll(db.getAllRecipes());
         for (Recipe recipeDB: RecipeDatabase) {
             int id = recipeDB.getId();
-            Log.i("Database data:", String.valueOf(id));
         }
         verticalRecipes = RecipeDatabase;
         adapter = new RecipesRecyclerAdapter(verticalRecipes, this);
@@ -169,9 +163,7 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     }
 
     private void fetchRecipes(String query) {
-        Log.i("fetched:", "111111111");
         if (retrofit == null) {
-            Log.i("fetched:", "retrofit = null");
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -183,12 +175,8 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
         call.enqueue(new Callback<RecipeResponse>() {
             @Override
             public void onResponse(Call<RecipeResponse> call, Response<RecipeResponse> response) {
-                Log.i("responded:", response.body().toString());
                 RecipeResponse recipeResponse = response.body();
                 verticalRecipes = recipeResponse.getRecipes();
-//                for (Recipe recipe: data) {
-//                    db.insertRecipe(recipe);
-//                }
                 if (verticalRecipes != null) {
                     adapter = new RecipesRecyclerAdapter(verticalRecipes, RecipeListFragment.this);
                     recyclerView.setAdapter(adapter);
@@ -238,12 +226,7 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
                     horizontalRecipes = randomRecipes2;
                     horizontalAdapter = new HorizontalAdapter(horizontalRecipes, RecipeListFragment.this);
                     horizontalScrollView.setAdapter(horizontalAdapter);
-
-//                    db.insertRecipes(randomRecipes);
                 }
-//                for (Recipe recipe: data) {
-//                    db.insertRecipe(recipe);
-//                }
             }
 
             @Override
@@ -290,8 +273,6 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
         Intent intent = new Intent(getActivity(), RecipeDetails.class);
         intent.putExtra("MyRecipe", currentRecipe);
         startActivity(intent);
-
-//        startActivity(currentRecipe);
     }
 
     @Override
@@ -303,20 +284,6 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
         startActivity(intent);
     }
 
-    public void sendBroadcast(View view) {
-
-    }
-    
-//    private void startActivity(Recipe currentRecipe) {
-//        Intent intent = new Intent(getActivity(), RecipeDetails.class);
-//        intent.putExtra("instructions", currentRecipe.getInstructions());
-//        intent.putExtra("name", currentRecipe.getRecipeName());
-//        intent.putExtra("image", currentRecipe.getImage());
-//        intent.putExtra("glass", currentRecipe.getGlass());
-//        intent.putExtra("ingredients", currentRecipe.getAllIngredients());
-//        intent.putExtra("measurements", currentRecipe.getAllMeasurements());
-//        startActivity(intent);
-//    }
 }
 
 

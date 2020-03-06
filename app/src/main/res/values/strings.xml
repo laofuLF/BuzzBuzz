@@ -10,4 +10,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="chooser">Share this recipe with...</string>
+    <string name="notification">Battery is low, music stopped playing!</string>
+    <string name="title">"BuzzBuzz: "</string>
 </resources>

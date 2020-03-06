@@ -45,7 +45,6 @@ public class RecipeDetails extends AppCompatActivity {
     }
 
     private void initView() {
-//        getIntentData();
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra("MyRecipe");
 
@@ -68,12 +67,10 @@ public class RecipeDetails extends AppCompatActivity {
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ingredientsListView.getLayoutParams();
         params.height = 200 * ingredients.size();
         ingredientsListView.setLayoutParams(params);
-//        getMap(ingredients, measurements);
         IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(ingredients, measurements);
         ingredientsListView.setAdapter(ingredientsAdapter);
         Log.d(TAG, "onCreate: " + instruction);
         Log.d(TAG, "onCreate: " + ingredients);
-//        layoutTitle.setText(test2);
         Picasso.get().load(image).into(detailImage);
         instructions.setText(instruction);
         layoutTitle.setText(name);
