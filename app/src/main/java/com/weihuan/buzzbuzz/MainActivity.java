@@ -17,6 +17,7 @@ import android.view.Window;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
+import com.weihuan.buzzbuzz.db.DatabaseHelper;
 import com.weihuan.buzzbuzz.fragment.RecipeListFragment;
 import com.weihuan.buzzbuzz.fragment.ViewPagerAdapter;
 import com.weihuan.buzzbuzz.service.MusicService;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private Boolean musicPlaying;
     private IntentFilter intentFilter;
     BroadcastReceiver broadcastReceiver;
+    private DatabaseHelper db;
 
     // UI
     private AHBottomNavigationViewPager viewPager;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         musicPlaying = false;
         initBottomBar();
         broadcastIntent();
+        db = new DatabaseHelper(this);
     }
 
     private void broadcastIntent() {
@@ -54,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
                     if (musicPlaying) {
                         stopService(new Intent(context, MusicService.class));
                         musicPlaying = false;
-//                        Toast.makeText(context, "Battery low! music stopped playing",
-//                                Toast.LENGTH_LONG).show();
                         sendNotification();
                     }
 

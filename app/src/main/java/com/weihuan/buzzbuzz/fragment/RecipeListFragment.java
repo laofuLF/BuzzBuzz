@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.weihuan.buzzbuzz.R;
 import com.weihuan.buzzbuzz.RecipeDetails;
 import com.weihuan.buzzbuzz.db.DatabaseHelper;
-import com.weihuan.buzzbuzz.db.Recipe;
+import com.weihuan.buzzbuzz.db.RecipeModel;
 import com.weihuan.buzzbuzz.network.RecipeApiService;
 import com.weihuan.buzzbuzz.network.RecipeResponse;
 
@@ -48,12 +48,11 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     private RecyclerView.LayoutManager layoutManager;
     private DatabaseHelper db;
     private CardView cardView;
-//    private TextView tabTitle;
     private EditText editQuery;
     private TextView tabTitle;
     private Retrofit retrofit = null;
-    private List<Recipe> verticalRecipes;
-    private List<Recipe> horizontalRecipes;
+    private List<RecipeModel> verticalRecipeModels;
+    private List<RecipeModel> horizontalRecipeModels;
     private HorizontalAdapter horizontalAdapter;
     private LinearLayoutManager horizontalLayout;
     private TextView iconic;
@@ -96,7 +95,6 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
 
         editQuery = (EditText) view.findViewById(R.id.edit_query);
 
-
         int tabIndex = getArguments().getInt("index", -1);
         switch (tabIndex) {
             case 0:
@@ -115,8 +113,8 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     private void initPopular(View view) {
         editQuery.setVisibility(View.GONE);
         tabTitle.setText(R.string.tab1Title);
-        List<Recipe> randomRecipes1 = new ArrayList<>();
-        List<Recipe> randomRecipes2 = new ArrayList<>();
+        List<RecipeModel> randomRecipes1 = new ArrayList<>();
+        List<RecipeModel> randomRecipes2 = new ArrayList<>();
         fetchRandomRecipes(0, randomRecipes1, randomRecipes2);
         iconic.setText("Iconic Cocktails");
     }
@@ -152,13 +150,13 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
      * Display updated recipes from db
      */
     public void refreshDatabase() {
-        List<Recipe> RecipeDatabase = new ArrayList<>();
-        RecipeDatabase.addAll(db.getAllRecipes());
-        for (Recipe recipeDB: RecipeDatabase) {
-            int id = recipeDB.getId();
+        List<RecipeModel> recipeModelDatabase = new ArrayList<>();
+        recipeModelDatabase.addAll(db.getAllRecipes());
+        for (RecipeModel recipeModelDB : recipeModelDatabase) {
+            int id = recipeModelDB.getId();
         }
-        verticalRecipes = RecipeDatabase;
-        adapter = new RecipesRecyclerAdapter(verticalRecipes, this);
+        verticalRecipeModels = recipeModelDatabase;
+        adapter = new RecipesRecyclerAdapter(verticalRecipeModels, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -176,12 +174,12 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
             @Override
             public void onResponse(Call<RecipeResponse> call, Response<RecipeResponse> response) {
                 RecipeResponse recipeResponse = response.body();
-                verticalRecipes = recipeResponse.getRecipes();
-                if (verticalRecipes != null) {
-                    adapter = new RecipesRecyclerAdapter(verticalRecipes, RecipeListFragment.this);
+                verticalRecipeModels = recipeResponse.getRecipeModels();
+                if (verticalRecipeModels != null) {
+                    adapter = new RecipesRecyclerAdapter(verticalRecipeModels, RecipeListFragment.this);
                     recyclerView.setAdapter(adapter);
                 }else {
-                    adapter = new RecipesRecyclerAdapter(verticalRecipes, RecipeListFragment.this);
+                    adapter = new RecipesRecyclerAdapter(verticalRecipeModels, RecipeListFragment.this);
                     recyclerView.setAdapter(adapter);
                     Toast.makeText(getActivity(), "No Result Found", Toast.LENGTH_LONG).show();
                 }
@@ -195,7 +193,7 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     }
 
 
-    private void fetchRandomRecipes(int nRandom, List<Recipe> randomRecipes1, List<Recipe> randomRecipes2) {
+    private void fetchRandomRecipes(int nRandom, List<RecipeModel> randomRecipes1, List<RecipeModel> randomRecipes2) {
         Log.i("random fetched:", "111111111");
         if (retrofit == null) {
             Log.i("fetched:", "retrofit = null");
@@ -213,18 +211,18 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
                 Log.i("random_responded:", response.body().toString());
                 RecipeResponse recipeResponse = response.body();
                 if (nRandom < 10) {
-                    randomRecipes1.addAll(recipeResponse.getRecipes());
+                    randomRecipes1.addAll(recipeResponse.getRecipeModels());
                 } else if (nRandom >= 10 && nRandom < 20) {
-                    randomRecipes2.addAll(recipeResponse.getRecipes());
+                    randomRecipes2.addAll(recipeResponse.getRecipeModels());
                 }
                 if (nRandom < 20) {
                     fetchRandomRecipes(nRandom + 1, randomRecipes1, randomRecipes2);
                 }else {
-                    verticalRecipes = randomRecipes1;
-                    adapter = new RecipesRecyclerAdapter(verticalRecipes, RecipeListFragment.this);
+                    verticalRecipeModels = randomRecipes1;
+                    adapter = new RecipesRecyclerAdapter(verticalRecipeModels, RecipeListFragment.this);
                     recyclerView.setAdapter(adapter);
-                    horizontalRecipes = randomRecipes2;
-                    horizontalAdapter = new HorizontalAdapter(horizontalRecipes, RecipeListFragment.this);
+                    horizontalRecipeModels = randomRecipes2;
+                    horizontalAdapter = new HorizontalAdapter(horizontalRecipeModels, RecipeListFragment.this);
                     horizontalScrollView.setAdapter(horizontalAdapter);
                 }
             }
@@ -268,19 +266,19 @@ public class RecipeListFragment extends Fragment implements RecipesRecyclerAdapt
     @Override
     public void onRecipeClick(int position) {
         Log.d(TAG, "onRecipeClick: " + position);
-        Log.d(TAG, "onRecipeClick: " + verticalRecipes.get(position).getInstructions());
-        Recipe currentRecipe = verticalRecipes.get(position);
+        Log.d(TAG, "onRecipeClick: " + verticalRecipeModels.get(position).getInstructions());
+        RecipeModel currentRecipeModel = verticalRecipeModels.get(position);
         Intent intent = new Intent(getActivity(), RecipeDetails.class);
-        intent.putExtra("MyRecipe", currentRecipe);
+        intent.putExtra("MyRecipe", currentRecipeModel);
         startActivity(intent);
     }
 
     @Override
     public void onHorizontalRecipeClick(int position) {
         Log.d(TAG, "onHorizontalRecipeClick: ");
-        Recipe currentRecipe = horizontalRecipes.get(position);
+        RecipeModel currentRecipeModel = horizontalRecipeModels.get(position);
         Intent intent = new Intent(getActivity(), RecipeDetails.class);
-        intent.putExtra("MyRecipe", currentRecipe);
+        intent.putExtra("MyRecipe", currentRecipeModel);
         startActivity(intent);
     }
 

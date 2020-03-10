@@ -2,8 +2,6 @@ package com.weihuan.buzzbuzz.fragment;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +10,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.weihuan.buzzbuzz.R;
-import com.weihuan.buzzbuzz.db.Recipe;
+import com.weihuan.buzzbuzz.db.RecipeModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecipesRecyclerAdapter extends RecyclerView.Adapter<RecipesRecyclerAdapter.ViewHolder> {
-    private Context context;
-    private List<Recipe> recipes = new ArrayList<>();
+    private List<RecipeModel> recipeModels = new ArrayList<>();
     private OnRecipeListener mOnRecipeListener;
 
 
@@ -43,29 +40,14 @@ public class RecipesRecyclerAdapter extends RecyclerView.Adapter<RecipesRecycler
         }
     }
 
-    public RecipesRecyclerAdapter(List<Recipe> newRecipes, OnRecipeListener onRecipeListener) {
+    public RecipesRecyclerAdapter(List<RecipeModel> newRecipeModels, OnRecipeListener onRecipeListener) {
 
-        recipes.clear();
-        if (newRecipes != null){
-            recipes.addAll(newRecipes);
+        recipeModels.clear();
+        if (newRecipeModels != null){
+            recipeModels.addAll(newRecipeModels);
             this.mOnRecipeListener = onRecipeListener;
         }
-
-
-//        dataSet.clear();
-//        dataSet.addAll(data);
-//        imageSet.clear();
-//        imageSet.addAll(image);
-//        imageDownloader = new ImageDownloader();
-//        try {
-//            bitmaps = imageDownloader.execute(imageSet).get();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
     }
-
 
     @Override
     public RecipesRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -76,33 +58,19 @@ public class RecipesRecyclerAdapter extends RecyclerView.Adapter<RecipesRecycler
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Recipe currentRecipe = recipes.get(position);
-        holder.textView.setText(currentRecipe.getRecipeName());
-        Picasso.get().load(currentRecipe.getImage()).into(holder.imageView);
-        holder.category.setText(currentRecipe.getCategory());
-//        try {
-//            URL url = new URL(imageSet.get(position));
-//            Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//            holder.imageView.setImageBitmap(bitmap);
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        RecipeModel currentRecipeModel = recipeModels.get(position);
+        holder.textView.setText(currentRecipeModel.getRecipeName());
+        Picasso.get().load(currentRecipeModel.getImage()).into(holder.imageView);
+        holder.category.setText(currentRecipeModel.getCategory());
     }
 
     @Override
     public int getItemCount() {
-        return recipes.size();
+        return recipeModels.size();
     }
 
     public interface OnRecipeListener {
         void onRecipeClick(int position);
         void onHorizontalRecipeClick(int position);
     }
-
-//    public interface OnHorizontalRecipeListener {
-//        void onHorizontalRecipeClick(int position);
-//    }
-
 }

@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.weihuan.buzzbuzz.R;
-import com.weihuan.buzzbuzz.db.Recipe;
+import com.weihuan.buzzbuzz.db.RecipeModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.ViewHolder> {
-    private List<Recipe> recipes = new ArrayList<>();
+    private List<RecipeModel> recipeModels = new ArrayList<>();
     private RecipesRecyclerAdapter.OnRecipeListener mOnRecipeListener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -38,11 +38,11 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Vi
         }
     }
 
-    public HorizontalAdapter(List<Recipe> newRecipes, RecipesRecyclerAdapter.OnRecipeListener onRecipeListener) {
+    public HorizontalAdapter(List<RecipeModel> newRecipeModels, RecipesRecyclerAdapter.OnRecipeListener onRecipeListener) {
 
-        recipes.clear();
-        if (newRecipes != null) {
-            recipes.addAll(newRecipes);
+        recipeModels.clear();
+        if (newRecipeModels != null) {
+            recipeModels.addAll(newRecipeModels);
             this.mOnRecipeListener = onRecipeListener;
         }
     }
@@ -57,14 +57,14 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Recipe currentRecipe = recipes.get(position);
-        holder.textView.setText(currentRecipe.getRecipeName());
-        Picasso.get().load(currentRecipe.getImage()).into(holder.imageView);
+        RecipeModel currentRecipeModel = recipeModels.get(position);
+        holder.textView.setText(currentRecipeModel.getRecipeName());
+        Picasso.get().load(currentRecipeModel.getImage()).into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return recipes.size();
+        return recipeModels.size();
     }
 
 }

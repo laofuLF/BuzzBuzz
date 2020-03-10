@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.weihuan.buzzbuzz.db.Ingredient;
+import com.weihuan.buzzbuzz.db.IngredientModel;
 import com.weihuan.buzzbuzz.network.IngredientResponse;
 import com.weihuan.buzzbuzz.network.RecipeApiService;
 
@@ -30,7 +30,7 @@ public class IngredientDescription extends AppCompatActivity {
     private ImageView imageView;
     private TextView description;
     private TextView ifAlcoholic;
-    private List<Ingredient> ingredients;
+    private List<IngredientModel> ingredientModels;
 
     public static final String BASE_URL = "https://www.thecocktaildb.com/api/json/v1/1/";
     public static final String IMAGE_BASE_URL = "https://www.thecocktaildb.com/images/ingredients/%s.png";
@@ -49,14 +49,11 @@ public class IngredientDescription extends AppCompatActivity {
     }
 
     private void initView() {
-        
-
         Intent intent = getIntent();
         String titleData = intent.getStringExtra("ingredientName");
         String imageURL = String.format(IMAGE_BASE_URL, titleData);
         title.setText(titleData);
         Picasso.get().load(imageURL).into(imageView);
-
         fetchIngredientData(titleData);
     }
 
@@ -75,10 +72,10 @@ public class IngredientDescription extends AppCompatActivity {
             public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
                 Log.d(TAG, "onResponse: ");
                 IngredientResponse ingredientResponse = response.body();
-                ingredients = ingredientResponse.getIngredient();
-                Ingredient ingredient = ingredients.get(0);
+                ingredientModels = ingredientResponse.getIngredient();
+                IngredientModel ingredientModel = ingredientModels.get(0);
                 try {
-                    String type = ingredient.getType();
+                    String type = ingredientModel.getType();
                     if (!type.equals("null")) {
                         style.setText("Style: " + type);
                     }
@@ -86,18 +83,16 @@ public class IngredientDescription extends AppCompatActivity {
                     style.setVisibility(View.GONE);
                 }
 
-                description.setText(ingredient.getDescription());
+                description.setText(ingredientModel.getDescription());
                 try {
-                    if (ingredient.getIfAlcohol().equals("Yes")) {
-                        ifAlcoholic.setText("Alcoholic");
+                    if (ingredientModel.getIfAlcohol().equals("Yes")) {
+                        ifAlcoholic.setText(R.string.alcoholic);
                     } else {
-                        ifAlcoholic.setText("Non-alcoholic");
+                        ifAlcoholic.setText(R.string.nonAlcoholic);
                     }
                 } catch (Exception e) {
                     ifAlcoholic.setVisibility(View.GONE);
                 }
-
-                Log.d(TAG, "onResponse: " + ingredient.getDescription());
             }
 
             @Override

@@ -6,12 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,12 +16,11 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.weihuan.buzzbuzz.db.DatabaseHelper;
-import com.weihuan.buzzbuzz.db.Recipe;
+import com.weihuan.buzzbuzz.db.RecipeModel;
 import com.weihuan.buzzbuzz.fragment.IngredientsAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class RecipeDetails extends AppCompatActivity {
     private static final String TAG = "RecipeDetails";
@@ -35,7 +31,7 @@ public class RecipeDetails extends AppCompatActivity {
     private String glass;
     private ArrayList<String> ingredients = new ArrayList<>();
     private ArrayList<String> measurements = new ArrayList<>();
-    private Recipe recipe;
+    private RecipeModel recipeModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +42,7 @@ public class RecipeDetails extends AppCompatActivity {
 
     private void initView() {
         Intent intent = getIntent();
-        recipe = intent.getParcelableExtra("MyRecipe");
+        recipeModel = intent.getParcelableExtra("MyRecipe");
 
         DatabaseHelper db = new DatabaseHelper(this);
         TextView layoutTitle = findViewById(R.id.detailRecipeTitle);
@@ -54,15 +50,15 @@ public class RecipeDetails extends AppCompatActivity {
         ImageView detailImage = findViewById(R.id.detailsImage);
         ListView ingredientsListView = findViewById(R.id.ingredientsListView);
         Button deleteButton = findViewById(R.id.delete_button);
-        if (!db.checkExist(recipe.getId())) {
+        if (!db.checkExist(recipeModel.getId())) {
             deleteButton.setVisibility(View.GONE);
         }
 
-        ingredients = recipe.getAllIngredients();
-        measurements = recipe.getAllMeasurements();
-        image = recipe.getImage();
-        instruction = recipe.getInstructions();
-        name = recipe.getRecipeName();
+        ingredients = recipeModel.getAllIngredients();
+        measurements = recipeModel.getAllMeasurements();
+        image = recipeModel.getImage();
+        instruction = recipeModel.getInstructions();
+        name = recipeModel.getRecipeName();
 
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ingredientsListView.getLayoutParams();
         params.height = 200 * ingredients.size();
@@ -98,18 +94,18 @@ public class RecipeDetails extends AppCompatActivity {
 
     public void onClickSave(View view) {
         DatabaseHelper db = new DatabaseHelper(this);
-        if (db.checkExist(recipe.getId())) {
+        if (db.checkExist(recipeModel.getId())) {
             Toast.makeText(this, "Already Saved", Toast.LENGTH_SHORT).show();
         } else {
-            db.insertRecipe(recipe);
+            db.insertRecipe(recipeModel);
             Toast.makeText(this, "Successfully Saved", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void onClickDelete(View view) {
         DatabaseHelper db = new DatabaseHelper(this);
-        if (db.checkExist(recipe.getId())) {
-            db.deleteRecipe(recipe);
+        if (db.checkExist(recipeModel.getId())) {
+            db.deleteRecipe(recipeModel);
             Toast.makeText(this, "Recipe Deleted", Toast.LENGTH_SHORT).show();
         }
     }

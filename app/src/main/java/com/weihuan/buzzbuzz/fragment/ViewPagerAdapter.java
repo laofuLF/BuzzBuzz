@@ -18,7 +18,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         fragments.add(RecipeListFragment.newInstance(0));
         fragments.add(RecipeListFragment.newInstance(1));
         fragments.add(RecipeListFragment.newInstance(2));
-
     }
 
     @Override

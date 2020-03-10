@@ -4,11 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-import com.weihuan.buzzbuzz.R;
 
 import java.util.ArrayList;
 
-public class Recipe implements Parcelable {
+public class RecipeModel implements Parcelable {
 
     public static final String TABLE_NAME = "recipes";
     public static final String COLUMN_ID = "id";
@@ -170,21 +169,9 @@ public class Recipe implements Parcelable {
     public static final String DELETE_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-    public Recipe() {}
+    public RecipeModel() {}
 
-
-//    public Recipe(int id, String recipeName, String glass, String image,
-//                  String instructions, String category, String ingredients, String measurements) {
-//        this.id = id;
-//        this.recipeName = recipeName;
-//        this.glass = glass;
-//        this.image = image;
-//        this.instructions = instructions;
-//        this.category = category;
-//
-//    }
-
-    public Recipe(Parcel in) {
+    public RecipeModel(Parcel in) {
         this.id = in.readInt();
         this.recipeName = in.readString();
         this.glass = in.readString();
@@ -373,15 +360,15 @@ public class Recipe implements Parcelable {
     /**
      * This part is needed for Android to be able to create new objects, individually or as arrays
      */
-    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+    public static final Parcelable.Creator<RecipeModel> CREATOR = new Parcelable.Creator<RecipeModel>() {
         @Override
-        public Recipe createFromParcel(Parcel source) {
-            return new Recipe((source));
+        public RecipeModel createFromParcel(Parcel source) {
+            return new RecipeModel((source));
         }
 
         @Override
-        public Recipe[] newArray(int size) {
-            return new Recipe[size];
+        public RecipeModel[] newArray(int size) {
+            return new RecipeModel[size];
         }
 
     };
@@ -389,8 +376,8 @@ public class Recipe implements Parcelable {
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof Recipe) {
-            Recipe toCompare = (Recipe) object;
+        if (object instanceof RecipeModel) {
+            RecipeModel toCompare = (RecipeModel) object;
             return (this.recipeName.equalsIgnoreCase((toCompare.getRecipeName())));
         }
         return false;

@@ -2,7 +2,7 @@ package com.weihuan.buzzbuzz.db;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Ingredient {
+public class IngredientModel {
     @SerializedName("idIngredient")
     private int id;
     @SerializedName("strIngredient")
@@ -14,7 +14,7 @@ public class Ingredient {
     @SerializedName("strAlcohol")
     private String ifAlcohol;
 
-    public Ingredient(){}
+    public IngredientModel(){}
 
     public int getId() {
         return id;

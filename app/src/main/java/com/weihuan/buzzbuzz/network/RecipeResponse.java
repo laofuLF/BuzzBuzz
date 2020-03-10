@@ -1,20 +1,20 @@
 package com.weihuan.buzzbuzz.network;
 
 import com.google.gson.annotations.SerializedName;
-import com.weihuan.buzzbuzz.db.Recipe;
+import com.weihuan.buzzbuzz.db.RecipeModel;
 
 import java.util.List;
 
 public class RecipeResponse {
 
     @SerializedName("drinks")
-    private List<Recipe> recipes;
+    private List<RecipeModel> recipeModels;
 
-    public List<Recipe> getRecipes() {
-        return recipes;
+    public List<RecipeModel> getRecipeModels() {
+        return recipeModels;
     }
 
-    public void setRecipes(List<Recipe> recipes) {
-        this.recipes = recipes;
+    public void setRecipeModels(List<RecipeModel> recipeModels) {
+        this.recipeModels = recipeModels;
     }
 }
