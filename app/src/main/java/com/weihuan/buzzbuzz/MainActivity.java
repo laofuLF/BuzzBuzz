@@ -46,7 +46,14 @@ public class MainActivity extends AppCompatActivity {
         musicPlaying = false;
         initBottomBar();
         broadcastIntent();
+        initDatabase();
+    }
+
+    private void initDatabase() {
         db = new DatabaseHelper(this);
+        if (!db.checkForTableExists("recipes")) {
+            db.resetTable();
+        }
     }
 
     private void broadcastIntent() {

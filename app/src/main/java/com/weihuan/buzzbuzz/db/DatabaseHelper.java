@@ -37,6 +37,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public boolean checkForTableExists(String table){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT name FROM sqlite_master WHERE type='table' AND name='"+table+"'";
+        Cursor mCursor = db.rawQuery(query, null);
+        if (mCursor.getCount() > 0) {
+            return true;
+        }
+        mCursor.close();
+        return false;
+    }
+
     public void resetTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(RecipeModel.DELETE_TABLE);
